@@ -8,14 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kimbuca/card_compiler.git"
+    "url": "https://github.com/Kimbuca/card_compiler.git"
   },
   "author": "Kimberly Luna",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Kimbuca/card_compiler/issues"
-  },
-  "homepage": "https://github.com/Kimbuca/card_compiler#readme",
+  
   "dependencies": {
     "express": "^4.14.0"
   }
