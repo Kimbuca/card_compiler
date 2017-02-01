@@ -3,11 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="css/mystyle.css">
+
+	<!-- import del editor de texto desde CDN-->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+
 	<title> Card Compiler </title>
 </head>
+
 <body>
+
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -24,18 +30,27 @@
 
 
 <div class= "container">
+
 	
-	
-	<div class="form-group">
-	    <label for="exampleTextarea" >Lexic analyzer</label>
-	    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
-	    <a class="btn btn-success" id="button" onclick="myFunction()"> Compile 	</a>
+	<div class="row">
+
+		<div class="col-md-5">
+			<div class="form-group" id="left-side">
+		    <label for="exampleTextarea">Text Editor </label>
+		    <!--<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>-->
+		    <div id="editor"></div>
+		    <a class="btn btn-success" id="compile-button" onclick="myFunction()"> Execute </a>
+		</div>
+		</div>
+
+		<div class="col-md-7" id="canvas-container" style="background-color: green; height:500px">
+		</div>
 	</div>
-
-
 	<p id="demo"></p>
 </div>
 
-
 </body>
+
+<script type="text/javascript" src="js/main.js"></script>
+	
 </html>

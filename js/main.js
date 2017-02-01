@@ -15,6 +15,21 @@ const ERR_STATE = 6;
 */
 
 
+//configuracion del editor de texto
+var editor; 
+(function() {
+	var editor = ace.edit("editor");
+	editor.resize(true);
+
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/javascript");
+	editor.getSession().setTabSize(3);
+	//load the demo code
+})
+
+
+
+
 //This is the lexicography part
 function scanner(str){
 
@@ -43,9 +58,9 @@ function myFunction() {
 
 
 	//preprocess program
-    var texto = document.getElementById("exampleTextarea").value;
+    var texto = editor.getValue();
     var array = texto.replace(/\n/g, " ").split(" ").join("");		//everything as a single iterable string
-
+    
     var lex = new scanner(array);
     var tokens 	= lex.analyze(); 	
     console.log(tokens);

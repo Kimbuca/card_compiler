@@ -1,0 +1,16 @@
+#editor { 
+    width: auto;
+    height: 500px;
+    border-radius: 15px 45px;
+}
+
+
+#compile-button{
+	margin-top: 1em;
+	float: right;
+}
+
+
+#canvas-container{
+	margin-top: 1.6em;
+}
