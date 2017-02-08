@@ -1,5 +1,14 @@
-program(){
-	
-}
+class program(){
 
-No funciona aun
+
+	
+
+
+
+
+
+	program(){
+
+	}
+
+}

@@ -1,0 +1,149 @@
+//<program> ::= "class" "program" "{" <functions> <main function> "}"
+void program() {
+  if ( exigir("class") ) {
+	if ( exigir("program") ) {
+	  if ( exigir("{") ) {
+		functions();
+		main_function();
+		if ( !exigir("}") ) {
+		  mensaje de error
+		}
+	  }
+	  else {
+	    mostrar error
+	  }
+	}
+	else {
+	  mostrar error
+	}
+  }
+  else {
+     mostrar error
+  }
+}
+
+
+//<functions> ::= <function> <functions alpha> | LAMBDA
+void functions()
+{
+	if(verificar("void"){
+		function();
+		functions_alpha();
+	}
+}
+
+//<functions alpha>  ::= <function> <functions alpha> | LAMBDA
+void functions_alpha() {
+  if ( verificar( "void" ) ) {
+	function();
+	functions_alpha();
+  }
+}
+
+<main function> ::= "program" "(" ")" "{" <body> "}"
+
+//<function> := "void" <name function> "("   ")" "{" <body> "}"
+void function() { 
+  if ( exigir( "void" ) ) {
+	name_function();
+	if ( exigir( "(" ) ) {
+	  if ( exigir ( ")" ) ) {
+	    if ( exigir ( "{"  ) ) {
+	      body(); 
+	      if ( !exigir( "}" ) ) {
+		    mensaje de error
+		  }
+		} else {
+		  mensaje de error
+		}
+	  } else {
+	    mensaje de error
+	  }
+	} else {
+	  mensaje de error
+	}
+  } else {
+    mensaje de error
+  }
+}
+
+
+
+
+<body> ::= <expression> <body alpha>
+void body(){
+	body_alpha();
+}
+
+
+<body alpha> ::= <expression> <body alpha> | LAMBDA
+void body_alpha(){
+	
+}
+
+
+<expression> ::= <call function> |
+  <if expression> |
+  <while expression> |
+  <iterate expression>
+
+<call function> ::= <name of function>
+
+<name of function> ::= <official function> | <customer function>
+
+
+
+<official function> ::=
+    "flip" |
+    "getCard" "(" <number of deck> ")" |
+    "putCard" "(" <number of deck> ")"
+
+
+
+
+<customer function> ::= is a string with only letters that was defined in a <function> previously.	
+//se tiene que guardar en algun lugar el nombre de esta customer func.
+
+
+<number of deck> ::=  is a number between 0 to 52 ( inclusive )
+
+<if expression> ::= "if" ( <conditional> ) "{" <body> "}"  <elseif> 
+
+<elseif> ::= "else" "{" <body> "}" | LAMBDA
+
+<while expression> ::= "while" "(" <conditional> ")" "{" <body> "}"
+
+<iterate expression> ::= "iterate" "(" <number> ")" "{" <body> "}"
+
+<conditional> ::= <card simple condition> | <card composed condition> | <deck simple condition>
+
+<card simple condition> ::=
+  "isRed"
+  | "isBlack"
+  | "isHeart"
+  | "isClubs"
+  | "isDiamond"
+  | "isSpades"
+  | "isNotRed"
+  | "isNotBlack"
+  | "isNotHeart"
+  | "isNotClubs"
+  | "isNotDiamond"
+  | "isNotSpades"
+
+
+<card composed condition> ::= "VALUE" <operator> <number>
+
+<number> ::= is a natural number between 1 - 13
+
+<operator> ::=
+    "<"
+    | ">"
+    | "<="
+    | ">="
+    | "=="
+    | "!="
+
+
+<deck simple condition> ::= isEmpty "(" <number of deck> ")" | isNotEmpty "(" <number of deck> ")"
+

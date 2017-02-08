@@ -8,6 +8,7 @@ const ERR_STATE = 6;
 	
 	insensible a espacios 
 	automata para el lexico (doing...)
+	mostrar stack de errores que no solo se rompa
 
 	...:::::LINEAMIENTOS:::::...
 	insensible a mayuscula
@@ -15,17 +16,20 @@ const ERR_STATE = 6;
 */
 
 
-//configuracion del editor de texto
-var editor; 
-(function() {
-	var editor = ace.edit("editor");
+var editor;
+(function editorSetup() {
+	editor = ace.edit("editor");
 	editor.resize(true);
 
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(3);
+	
 	//load the demo code
-})
+	//readFile("../../resources/demo-code.txt");
+	editor.setValue("class program { ");
+	
+})();
 
 
 
