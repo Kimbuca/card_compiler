@@ -1,24 +1,24 @@
 //<program> ::= "class" "program" "{" <functions> <main function> "}"
 void program() {
   if ( exigir("class") ) {
-	if ( exigir("program") ) {
-	  if ( exigir("{") ) {
-		functions();
-		main_function();
-		if ( !exigir("}") ) {
-		  mensaje de error
-		}
-	  }
-	  else {
-	    mostrar error
-	  }
-	}
-	else {
-	  mostrar error
-	}
+    if ( exigir("program") ) {
+      if ( exigir("{") ) {
+   	 functions();
+   	 main_function();
+   	 if ( !exigir("}") ) {
+   	   mensaje de error;
+   	 }
+      }
+      else {
+    	mostrar error
+      }
+    }
+    else {
+      mostrar error
+    }
   }
   else {
-     mostrar error
+ 	mostrar error
   }
 }
 
@@ -26,96 +26,250 @@ void program() {
 //<functions> ::= <function> <functions alpha> | LAMBDA
 void functions()
 {
-	if(verificar("void"){
-		function();
-		functions_alpha();
-	}
+    if(verificar("void"){
+   	 function();
+   	 functions_alpha();
+    }
 }
 
 //<functions alpha>  ::= <function> <functions alpha> | LAMBDA
 void functions_alpha() {
   if ( verificar( "void" ) ) {
-	function();
-	functions_alpha();
+    function();
+    functions_alpha();
   }
 }
 
 <main function> ::= "program" "(" ")" "{" <body> "}"
 
 //<function> := "void" <name function> "("   ")" "{" <body> "}"
-void function() { 
+void function() {
   if ( exigir( "void" ) ) {
-	name_function();
-	if ( exigir( "(" ) ) {
-	  if ( exigir ( ")" ) ) {
-	    if ( exigir ( "{"  ) ) {
-	      body(); 
-	      if ( !exigir( "}" ) ) {
-		    mensaje de error
-		  }
-		} else {
-		  mensaje de error
-		}
-	  } else {
-	    mensaje de error
-	  }
-	} else {
-	  mensaje de error
-	}
+    name_function();
+    if ( exigir( "(" ) ) {
+      if ( exigir ( ")" ) ) {
+    	if ( exigir ( "{"  ) ) {
+      	body();
+      	if ( !exigir( "}" ) ) {
+   	 	mensaje de error
+   	   }
+   	 } else {
+   	   mensaje de error
+   	 }
+      } else {
+    	mensaje de error
+      }
+    } else {
+      mensaje de error
+    }
   } else {
-    mensaje de error
+	mensaje de error
   }
 }
 
 
 
 
+
 <body> ::= <expression> <body alpha>
 void body(){
-	body_alpha();
+    expression();
+    body_alpha();
 }
 
 
 <body alpha> ::= <expression> <body alpha> | LAMBDA
 void body_alpha(){
-	
+ If ( verificar (“void”)){
+	 expression();
+	 body_alpha();
+
 }
+   
+  }
 
 
 <expression> ::= <call function> |
   <if expression> |
   <while expression> |
   <iterate expression>
+Void expression(){
+	if(verificar(“if” )){
+		if_expression();
+}
+Else if(verificar(“while”)){
+	while_expression();
+}else if(verificar(“iterate”){
+	iterate_expression();
+}else{
+	call_function();
+}
 
+}
 <call function> ::= <name of function>
+Void call_function(){
+Name_of_function();
+}
+
 
 <name of function> ::= <official function> | <customer function>
-
+Void name_of_function(){
+	if(verificar(“flip” | “getCard” | “putCard”)){
+		official_function();
+}else{
+	customer_function();
+}
+}
 
 
 <official function> ::=
-    "flip" |
-    "getCard" "(" <number of deck> ")" |
-    "putCard" "(" <number of deck> ")"
+	"flip" |
+	"getCard" "(" <number of deck> ")" |
+	"putCard" "(" <number of deck> ")"
+Void official_function(){
+	if(exigir(“flip”)){
+		flip();
+	}else if(exigir(“getCard”)){
+		if(exigir(“(“)){
+	if(vericar(int)){
+	number_of_deck();
+	if(exigir(“)”)){
+	
+}
+}
+}
+	}else{
+if(exigir(“(“)){
+	if(vericar(int)){
+	number_of_deck();
+	if(exigir(“)”)){
+	
+}
+}
+}
+	}
+
+}
 
 
 
-
-<customer function> ::= is a string with only letters that was defined in a <function> previously.	
-//se tiene que guardar en algun lugar el nombre de esta customer func.
+<customer function> ::= is a string with only letters that was defined in a <function> previously.    
+void customer_function(){
+  //se tiene que guardar en algun lugar el nombre de esta customer func.
+}
 
 
 <number of deck> ::=  is a number between 0 to 52 ( inclusive )
+void number_of_deck(){
+  //deberia checar que es un numero entre el 0 y 52
+}
 
-<if expression> ::= "if" ( <conditional> ) "{" <body> "}"  <elseif> 
+
+<if expression> ::= "if" “(“ <conditional> “)” "{" <body> "}"  <elseif>
+Void if_expression(){
+    
+	if(exigir(“if”)){
+		if(exigir(“(”){
+			conditional();
+			if(!exigir(“)”){
+				Send error
+            }
+            if(exigir(“{”)){
+                body();
+            if(!exigir(“}”){
+                Send error
+            }
+               
+               
+            //lo deje asi sin verificar por el lambda, puede ser vacio
+            elseif();
+      
+           
+	 
+            }else{
+                Send error
+            }	
+            }else{
+                Send error
+            }
+          }else{
+                Send error
+         }
+
 
 <elseif> ::= "else" "{" <body> "}" | LAMBDA
+void elseif(){
+    if(exigir("else")){
+      if(exigir("{")){
+        body();
+        if(!exigir("}")){
+          send error
+        }
+        
+      }else{
+        send error
+      }
+    
+    }else{
+      send error
+    }
+}
+
+function whileExp(){
+  
+}
+
 
 <while expression> ::= "while" "(" <conditional> ")" "{" <body> "}"
+void while(){
+  if(exigir("while")){
+    if(exigir("(")){
+      conditional();
+      if(!exigir(")")){
+        send error
+      }
+      if(exigir("{")){
+        body();
+        if(!exigir("}")){
+          send error
+        }
+      }
+    }
+  }else{
+    send error
+  }
+}
 
 <iterate expression> ::= "iterate" "(" <number> ")" "{" <body> "}"
+void iterate_expression(){
+  if(exigir("iterate")){
+    if(exigir("(")){
+      conditional();
+      if(!exigir(")")){
+        send error
+      }
+      if(exigir("{")){
+        body();
+        if(!exigir("}")){
+          send error
+        }
+      }
+    }
+  }else{
+    send error
+  }
+}
 
 <conditional> ::= <card simple condition> | <card composed condition> | <deck simple condition>
+void conditional(){
+  if(verificar("VALUE")){
+    card_composed_condition();
+  }else if(verificar("isEmpty") | verificar("isNotEmpty")){
+    deck_simple_condition();
+  }else{
+      card_simple_condition();
+    }
+}  
 
 <card simple condition> ::=
   "isRed"
@@ -130,20 +284,95 @@ void body_alpha(){
   | "isNotClubs"
   | "isNotDiamond"
   | "isNotSpades"
+void card_simple_condition(){
+  
+  if(verificar("isRed")){
+    if(exigir("isRed")){
+        //do something - code
+    }else{
+        send error
+    }
+  }else  if(verificar("isHeart")){
+    if(exigir("isHeart")){
+        //do something - code
+    }else{
+        send error
+    }
+  }
+
+  //y asi para todos los condicionales xd
+
+}
 
 
 <card composed condition> ::= "VALUE" <operator> <number>
+void card_composed_condition(){
+  
+  if(exigir("VALUE")){
+
+    operator();
+
+
+  }else{
+      send error
+  }
+
+}
+
 
 <number> ::= is a natural number between 1 - 13
+void number(){
+  //terminal, deberia verificar un numero del 1 al 13
+}
 
 <operator> ::=
-    "<"
-    | ">"
-    | "<="
-    | ">="
-    | "=="
-    | "!="
+	"<"
+	| ">"
+	| "<="
+	| ">="
+	| "=="
+	| "!="
 
 
 <deck simple condition> ::= isEmpty "(" <number of deck> ")" | isNotEmpty "(" <number of deck> ")"
+void deck_simple_condition(){
+  if(verificar("isEmpty")){
+    if(exigir("isEmpty")){
+      if(exigir("(")){
+
+          number_of_deck();
+
+          if(!exigir(")")){
+            send error
+          }
+
+      }else{
+        send error
+      }
+
+    }else{
+      send error
+    }
+  }else{
+
+    if(exigir("isNotEmpty")){
+      if(exigir("(")){
+
+          number_of_deck();
+          
+          if(!exigir(")")){
+            send error
+          }
+
+      }else{
+        send error
+      }
+
+    }else{
+      send error
+    }
+  }
+}
+
+
 
