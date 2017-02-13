@@ -1,29 +1,28 @@
-const ERR = 7,
-	  ACPT    	= 8,	// makes token
+const ERR 		= 7,
+	  ACPT    	= 8,	// makes a single char token
 	  CONT 		= 9,	// ignores
 	  SKIP		= 10,	// moves iterator
+	  ACCB		= 11, 	// accepts and moves back
 	  NOT       = 20;   // placeholder
 
 
 
 
 //map of states
-const transition_table = [["1", "2", "3", "4", "5", "5", "6", "7"],  	// initial state or spaces
-						  ["1", "6", "3", "4", "5", "5", "6", "7"],		// on letterstate
-						  ["1", "2", "3", "4", "5", "5", "6", "7"],	
-						  ["1", "2", "3", "4", "5", "5", "6", "7"],		
-						  ["1", "2", "3", "7", "7", "0", "6", "7"],
-						  ["7", "7", "7", "7", "7", "0", "7", "7"],
-						  ["1", "2", "3", "4", "5", "5", "6", "7"] ];   // spaces
+const transition_table = [["1", "2", "3", "4", "5", "5", "0", "7"],  	// initial state or spaces
+						  ["1", "7", "0", "0", "0", "0", "0", "7"],		// on letterstate //0 2 
+						  ["7", "2", "0", "0", "0", "0", "0", "7"],	
+						  ["1", "2", "3", "0", "0", "0", "0", "7"],
+						  ["1", "2", "3", "7", "7", "5", "0", "7"],
+						  ["7", "2", "7", "7", "7", "0", "0", "7"]];   // NEEDs FIxING
 
 //doing 2 for ind 0 doesnt exists
-const accept_states	= 	[ [CONT,CONT, CONT, CONT, CONT, CONT, CONT, ERR], 	
-						  [NOT, CONT, ERR, 	ACPT, ACPT, ACPT, ACPT, ACPT, ERR],
-						  [NOT, ERR,  CONT,	ACPT, ACPT, ACPT, ACPT, ACPT, ERR],
-						  [NOT, ACPT, ACPT, ACPT, ACPT, ACPT, ACPT, ACPT, ERR],
-						  [NOT, ],
-						  [NOT],
-						  [NOT, SKIP, SKIP,	SKIP,	SKIP, 	SKIP,	SKIP,	ERR]];
+const accept_states	= 	[ [CONT, CONT, 	ACPT, CONT, CONT, CONT, SKIP, ERR], 	
+						  [CONT, ERR, 	ACCB, ACCB, ACCB, ACCB, ACCB, ERR],
+						  [ERR,  CONT,	ACCB, ACCB, ACCB, ACCB, ACCB, ERR],
+						  [CONT, CONT,  ACPT, ACCB, ACPT, ACCB, SKIP, ERR],				//FIX NUMBER
+						  [ACPT, ACCB, 	ACCB, ERR, 	ERR,  ACPT, ACPT,  ERR],
+						  [ERR,  CONT,	ERR,  ERR,	ERR,  ACPT, SKIP,  ERR]];
 
 
 
@@ -33,10 +32,16 @@ function symbMap(sym){
 
 	if(sym.toUpperCase() != sym.toLowerCase())			//is a letter --> '0' cuz of the column 
  		return 0;
- 	else if(sym == ("1" || "2" || "3" || "4" || "5" || "6" || "7" || "8" || "9" || "0"))
+ 	else if(sym == "1" || sym == "2" || sym== "3")
 		return 1;
 	else if(sym == "(" || sym == ")" ||  sym == "{" || sym == "}")
 		return 2;
+	else if(sym == ">" || sym == "<")
+		return 3;
+	else if(sym == "!")
+		return 4;
+	else if(sym == "=")
+		return 5;
 	else if(sym == " ")
 		return 6;
 	else
@@ -81,7 +86,7 @@ var editor;
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(3);
-	editor.setValue("class program() { ");
+	editor.setValue("c b()");
 	
 })();
 
@@ -116,34 +121,45 @@ function scanner(str){
 
 			///console.log(str.charAt(i) +" GO TO " +transition(CURR_STATE, str.charAt(i)));
 
-			//choladas
-			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 	// w/ current state and char: 'where am I going'
- 			state = accept_states[CURR_STATE][NEXT_STATE];   		// maps in accepted states table to see if it can form a token
 
- 			console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to do " +NEXT_STATE);
+			//choladas
+			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going'
+ 			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token //2 Y 
+
+ 			console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to GO " +NEXT_STATE);
  			console.log(" MY STATUS is " +state);
 
 			CURR_STATE 	= NEXT_STATE;								// update current state if it was not an error state
 
+			switch(state){
 
+				case ACPT:
 
+					console.log("from " +word_ind +" to " +i);
+					var word = str.substring(word_ind, i+1);
+					word_ind = i+1;
 
+					this.tokens.push(word);
+					break;
 
-			if(state==ACPT){
-				var word = str.substring(word_ind, i);
-				console.log("Acepted word" +word.toString());
-				word_ind = i;
-				this.tokens.push(word);
+				case ACCB:
+					//dont move ite
+					var word = str.substring(word_ind, i);
+					console.log("Acepted word ACCB" +word);
+					word_ind=i;				//no la incluye
+					i--;
+
+					this.tokens.push(word);
+					break;
+				case SKIP:
+					word_ind++;
+					break;
 
 			}
-
-			if(state == SKIP)
-				word_ind++;
-
 			if( i == SIZE)
 				return "SUCESS"
-
 			i++;
+			
 		}
 		
 		return "Error UNEXPECTED CHAR" +str.charAt(i);
@@ -160,7 +176,7 @@ function myFunction() {
 
 	//preprocess program
     var texto = editor.getValue();
-    var array = texto.replace(/\n/g, " ").split(" ").join(" ");		//everything as a single iterable string
+    var array =texto.replace(/\n/g, " ").split(" ").join(" ")	;		//everything as a single iterable string
 
     //lexicography
     var lex = new scanner(array);
