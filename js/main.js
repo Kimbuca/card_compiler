@@ -1,9 +1,8 @@
-const ERR 		= 7,
+const ERR 		= 7,	// error
 	  ACPT    	= 8,	// makes a single char token
 	  CONT 		= 9,	// ignores
 	  SKIP		= 10,	// moves iterator
-	  ACCB		= 11, 	// accepts and moves back
-	  NOT       = 20;   // placeholder
+	  ACCB		= 11; 	// accepts and moves back
 
 
 
@@ -11,18 +10,18 @@ const ERR 		= 7,
 //map of states
 const transition_table = [["1", "2", "3", "4", "5", "5", "0", "7"],  	// initial state or spaces
 						  ["1", "7", "0", "0", "0", "0", "0", "7"],		// on letterstate //0 2 
-						  ["7", "2", "0", "0", "0", "0", "0", "7"],	
-						  ["1", "2", "3", "0", "0", "0", "0", "7"],
-						  ["1", "2", "3", "7", "7", "5", "0", "7"],
-						  ["7", "2", "7", "7", "7", "0", "0", "7"]];   // NEEDs FIxING
+						  ["7", "2", "0", "0", "0", "0", "0", "7"],		// on number
+						  ["1", "2", "3", "0", "0", "5", "0", "7"],		// on { ( ) }
+						  ["1", "2", "3", "7", "7", "5", "0", "7"],		// on > or <
+						  ["7", "2", "7", "7", "7", "0", "0", "7"]];   //  on ! or = or maybe > // needs fixing for when just '=' it accepts it 
 
 //doing 2 for ind 0 doesnt exists
 const accept_states	= 	[ [CONT, CONT, 	ACPT, CONT, CONT, CONT, SKIP, ERR], 	
 						  [CONT, ERR, 	ACCB, ACCB, ACCB, ACCB, ACCB, ERR],
 						  [ERR,  CONT,	ACCB, ACCB, ACCB, ACCB, ACCB, ERR],
-						  [CONT, CONT,  ACPT, ACCB, ACPT, ACCB, SKIP, ERR],				//FIX NUMBER
-						  [ACPT, ACCB, 	ACCB, ERR, 	ERR,  ACPT, ACPT,  ERR],
-						  [ERR,  CONT,	ERR,  ERR,	ERR,  ACPT, SKIP,  ERR]];
+						  [CONT, CONT,  ACPT, CONT, ACPT, CONT, SKIP, ERR],				//FIX NUMBER
+						  [ACPT, ACCB, 	ACCB, ERR, 	ERR,  ACPT, ACPT, ERR],
+						  [ERR,  ACCB,	CONT, ERR,	ERR,  ACPT, SKIP, ERR]];
 
 
 
@@ -30,9 +29,9 @@ const accept_states	= 	[ [CONT, CONT, 	ACPT, CONT, CONT, CONT, SKIP, ERR],
 
 function symbMap(sym){
 
-	if(sym.toUpperCase() != sym.toLowerCase())			//is a letter --> '0' cuz of the column 
+	if(sym.toUpperCase() != sym.toLowerCase())							//is a letter 
  		return 0;
- 	else if(sym == "1" || sym == "2" || sym== "3")
+ 	else if(sym.charCodeAt(0) >= 48 && sym.charCodeAt(0) <= 57)	//is a number
 		return 1;
 	else if(sym == "(" || sym == ")" ||  sym == "{" || sym == "}")
 		return 2;
@@ -86,7 +85,7 @@ var editor;
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(3);
-	editor.setValue("c b()");
+	editor.setValue("class program() {}");
 	
 })();
 
@@ -108,11 +107,16 @@ function scanner(str){
 		return this.tokens;
 	}
 
+
+	this.addToken = function(start, end){
+		var word = str.substring(start, end);
+		//console.log("From " +start +" to " +end +" word is: " +word);
+		this.tokens.push(word);
+	}
+
+
 	this.analyze = function (){
-		var CURR_STATE = 0; // initial state
-		var i 	  = 0;
-		var state = 0;
-		var word_ind = 0;
+		var CURR_STATE = i = state = word_ind = 0;					// initializaton;
 		var SIZE = this.program.length;
 			
 
@@ -123,43 +127,34 @@ function scanner(str){
 
 
 			//choladas
-			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going'
- 			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token //2 Y 
-
+			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going next'
+ 			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token
  			console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to GO " +NEXT_STATE);
- 			console.log(" MY STATUS is " +state);
+ 			//console.log(" MY STATUS is " +state);
 
 			CURR_STATE 	= NEXT_STATE;								// update current state if it was not an error state
 
 			switch(state){
 
 				case ACPT:
-
-					console.log("from " +word_ind +" to " +i);
-					var word = str.substring(word_ind, i+1);
-					word_ind = i+1;
-
-					this.tokens.push(word);
+					this.addToken(word_ind, i+1);					// 
+					word_ind = i+1;									// mvoes iterator 
 					break;
 
 				case ACCB:
-					//dont move ite
-					var word = str.substring(word_ind, i);
-					console.log("Acepted word ACCB" +word);
-					word_ind=i;				//no la incluye
-					i--;
-
-					this.tokens.push(word);
+					this.addToken(word_ind, i);						//stores in a range and doesnt move iterator
+					word_ind=i;								
+					i--;											// dont move iterator
 					break;
+
 				case SKIP:
-					word_ind++;
+					word_ind++;										// move word index 
 					break;
-
 			}
-			if( i == SIZE)
-				return "SUCESS"
-			i++;
-			
+
+			if( i == SIZE)											//								
+				return;
+			i++;			
 		}
 		
 		return "Error UNEXPECTED CHAR" +str.charAt(i);
