@@ -156,7 +156,8 @@ function scanner(str){
 				return;
 			i++;			
 		}
-		
+		document.getElementById('modal_content').innerHTML= "Error UNEXPECTED CHAR "+str.charAt(i-1);
+		$("#myModal").modal();
 		return "Error UNEXPECTED CHAR" +str.charAt(i);
 	};
 }
