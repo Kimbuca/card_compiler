@@ -85,7 +85,7 @@ var editor;
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 	editor.getSession().setTabSize(3);
-	editor.setValue("class program() {}");
+	editor.setValue("class program {}");
 	
 })();
 
@@ -157,7 +157,9 @@ function scanner(str){
 			i++;			
 		}
 		
+		console.log("Error");
 		return "Error UNEXPECTED CHAR" +str.charAt(i);
+		// Send error
 	};
 }
 //returns the data structure containing all the tokens
@@ -171,7 +173,7 @@ function myFunction() {
 
 	//preprocess program
     var texto = editor.getValue();
-    var array =texto.replace(/\n/g, " ").split(" ").join(" ")	;		//everything as a single iterable string
+    var array =texto.replace(/\n/g, " ").split(" ").join(" ").toLowerCase()	;		//everything as a single iterable string
 
     //lexicography
     var lex = new scanner(array);
