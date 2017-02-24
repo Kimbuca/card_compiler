@@ -1,14 +1,125 @@
-class program(){
+class program {
+    program() {
+        flip
+    }
+}
 
 
+
+class program {
+    program() {
+        getCard(0)
+        
+        if (isRed){ 
+            flip 
+            
+        }  
+    }
+}
+
+
+class program {
+
+	program() {
+		while ( isNotEmpty(0) ) { 
+			flip 
+            		getCard(0)
+          }  
+	}
+}
+
+
+
+
+
+
+
+class program {
+	void voltear() {
+		flip 
+	}
+
+     program() {
+	 while ( isNotEmpty(0) ) { 
+            getCard(0)
+            voltear
+            putCard(1)            
+          }  
+     }
+}
+
+
+
+
+
+
+class program {
+    void voltear() {
+        flip 
+    }
+    
+    void recorrer() {
+        while ( isNotEmpty(0) ) { 
+            getCard(0)
+            voltear
+            putCard(1)            
+        }  
+    }
+
+     program() {
+       recorrer
+     }
+}
+
+
+
+
+
+
+
+
+
+/////////////
+		inicialmente el mazo 1 esta
+//////
+class program{
+		
+	program(){
+
+		
+
+		while(isNotEmpty(0)){
+			getCard(0)
+			
+			if(isHeart){
+				if(isEmpty(1)){
+					getCard(0)
+					while(isNotHeart){
+						putCard(1)
+						getCard(0)
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+//
+
+class program{
 	
-
-
-
-
+	// deck 2 stores hearts
 
 	program(){
 
-	}
+		while(isNotEmpty(0)){
+			getCard(2)
 
+			if(VALUE <= 12){
+				 	
+			}
+		}
+	}
 }
