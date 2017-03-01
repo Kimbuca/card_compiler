@@ -3,7 +3,8 @@ function syntactic_analysis(tokens){
 	console.log(tokens);
 	
 	//Guardar tokens para que accedan todos los demas
-
+	index = 0;
+	
 	program();
 
 };
@@ -32,14 +33,27 @@ function program(tokens){
 }
 
 function exigir(str){
-	return true;
+	if(tokens[index] == str){
+		index++;
+		return true;
+	};
+	return false;
 }
 
 function verificar(str){
-	return true;
+
+	return tokens[index] == str ? true : false;
 
 }
 
 function error(str){
 	toastr.error('Error in compilation: ' + str);
 };
+
+function functions(){
+
+}
+
+function main_function(){
+	
+}

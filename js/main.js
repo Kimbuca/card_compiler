@@ -67,7 +67,7 @@ var editor;
 	editor.getSession().setMode("ace/mode/javascript");
 
 	editor.getSession().setTabSize(4);
-	editor.setValue("class program() {}");
+	editor.setValue("class program {}");
 
 })();
 
