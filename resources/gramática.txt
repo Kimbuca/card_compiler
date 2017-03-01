@@ -93,6 +93,7 @@ void body_alpha(){
   <if expression> |
   <while expression> |
   <iterate expression>
+***Desde aquí
 Void expression(){
 	if(verificar(“if” )){
 		if_expression();
@@ -154,6 +155,7 @@ if(exigir(“(“)){
 
 
 <customer function> ::= is a string with only letters that was defined in a <function> previously.    
+*****Hasta esta Ari
 void customer_function(){
   //se tiene que guardar en algun lugar el nombre de esta customer func.
 }
