@@ -7,7 +7,7 @@ const ERR 		= 7,	// error
 
 
 
-//map of states
+// Automate determinista map of states
 const transition_table = [["1", "2", "3", "4", "5", "5", "0", "7"],  	// initial state or spaces
 						  ["1", "7", "0", "0", "0", "0", "0", "7"],		// on letterstate //0 2 
 						  ["7", "2", "0", "0", "0", "0", "0", "7"],		// on number
@@ -57,25 +57,6 @@ function transition(state, char){
 
 
 
-/* ...:::::PUNTOS EXTRA:::::...
-	
-	insensible a espacios 
-	automata para el lexico (doing...)
-
-	usar un editor 
-	en que linea la rego
-
-	mostrar stack de errores que no solo se rompa
-
-	...:::::LINEAMIENTOS:::::...
-	
-	LEXICOGRAFICO
-	insensible a mayusculas 
-	identificadores sin numeros
-	mandar error cuando hay error de escritura
-
-
-*/
 
 var editor;
 (function editorSetup() {
@@ -84,15 +65,11 @@ var editor;
 
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
-	editor.getSession().setTabSize(3);
-	editor.setValue("class program {}");
-	
+
+	editor.getSession().setTabSize(4);
+	editor.setValue("class program() {}");
+
 })();
-
-
-
-
-
 
 
 
@@ -110,7 +87,6 @@ function scanner(str){
 
 	this.addToken = function(start, end){
 		var word = str.substring(start, end);
-		//console.log("From " +start +" to " +end +" word is: " +word);
 		this.tokens.push(word);
 	}
 
@@ -123,13 +99,9 @@ function scanner(str){
 
 		while(state != ERR && i <= SIZE){	
 
-			///console.log(str.charAt(i) +" GO TO " +transition(CURR_STATE, str.charAt(i)));
-
-
-			//choladas
 			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going next'
  			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token
- 			console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to GO " +NEXT_STATE);
+ 			//console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to GO " +NEXT_STATE);
  			//console.log(" MY STATUS is " +state);
 
 			CURR_STATE 	= NEXT_STATE;								// update current state if it was not an error state
@@ -152,14 +124,15 @@ function scanner(str){
 					break;
 			}
 
-			if( i == SIZE)											//								
-				return;
+			if( i == SIZE)		
+
+				return toastr.success('Success Compilation	');
 			i++;			
 		}
-		
-		console.log("Error");
-		return "Error UNEXPECTED CHAR" +str.charAt(i);
-		// Send error
+
+		//"Error UNEXPECTED CHAR "+str.charAt(i-1)
+		return 	toastr.error('Error in compilation');
+
 	};
 }
 //returns the data structure containing all the tokens
@@ -173,12 +146,19 @@ function myFunction() {
 
 	//preprocess program
     var texto = editor.getValue();
-    var array =texto.replace(/\n/g, " ").split(" ").join(" ").toLowerCase()	;		//everything as a single iterable string
+
+    var array =texto.replace(/(\n|\t)/g," ").split(" ").join(" ");		//everything as a single iterable string
+    
+
+
+    //array.replace(/\t/g, " ").split(" ").join(" ");
 
     //lexicography
     var lex = new scanner(array);
     console.log(lex.analyze());	
     console.log(lex.getTokens());
+
+
 
     document.getElementById("demo").innerHTML = array;
 }
