@@ -162,7 +162,22 @@ function elseif(){
 
 
 function while_expression(){
+
 	if(exigir("while")){
+		if(exigir("(")){
+			conditional();
+			if(!exigir(")"))
+				throw "')'";
+			if(exigir("{")){
+				body();
+				if(!exigir("}"))
+					throw "'}'";
+			}else{
+				throw "'}'";
+			}
+		}else{
+			throw "'('";
+		}
 	}else{
 		throw "'while'";
 	}
