@@ -16,19 +16,19 @@ function program(tokens){
 		   	 functions();
 		   	 main_function();
 		   	 if ( !exigir("}") ) {
-		   	   error("Expected }");
+		   	   error("Expected '}'");
 		   	 }
 	      }
 	      else {
-	    	error("Expected {");
+	    	error("Expected '{'");
 	      }
 	    }
 	    else {
-	      error("Expected program");
+	      error("Expected 'program'");
 	    }
 	  }
 	  else {
-	 	error("Expected class");
+	 	error("Expected 'class'");
 	  }
 }
 
@@ -52,6 +52,56 @@ function error(str){
 
 function functions(){
 
+    if(verificar("void")){
+   	 functionSingle();
+   	 functions_alpha();
+    }
+
+}
+
+function functions_alpha() {
+  if ( verificar( "void" ) ) {
+    functionSingle();
+    functions_alpha();
+  }
+}
+
+function functionSingle() {
+  if ( exigir( "void" ) ) {
+  	// Aqui va en nombre de la function para hacerla
+    name_function();
+    if ( exigir( "(" ) ) {
+      if ( exigir ( ")" ) ) {
+    	if ( exigir ( "{"  ) ) {
+      	body();
+      	if ( !exigir( "}" ) ) {
+   	 	error("Expected '}'");
+   	   }
+   	 } else {
+   	   error("Expected '{'");
+   	 }
+      } else {
+    	error("Expected ')'");
+      }
+    } else {
+      error("Expected '('");
+    }
+  } else {
+	error("Expected 'void'");
+  }
+}
+
+function body(){
+    expression();
+    body_alpha();
+}
+
+
+void body_alpha(){
+	if ( verificar ("void")){
+		 expression();
+		 body_alpha();
+	}
 }
 
 function main_function(){
