@@ -153,8 +153,8 @@ function myFunction() {
     //lexicography
     var lex = new scanner(array);
     console.log(lex.analyze());	
-    console.log(lex.getTokens());
-
+    tokens = lex.getTokens();
+    syntactic_analysis(tokens);
 
 
     document.getElementById("demo").innerHTML = array;
