@@ -17,8 +17,6 @@ function syntactic_analysis(tokens){
 
 
 
-
-
 function program(tokens){
 	  if ( exigir("class") ) {
 	    if ( exigir("program") ) {
@@ -128,20 +126,20 @@ function if_expression(){
 		if(exigir("(")){
 			conditional();
 			if(!exigir(")"))
-				return throw "Expected ')' ";
+				return throw "')'";
 			if(exigir("{")){
 				body();
 				if(!exigir("}"))
-					throw "Expected '}' ";
+					throw "'}'";
 				elseif();
 			}else{
-				throw "Expected '{' ";
+				throw "'{'";
 			}
 		}else{
-			throw "Expected 'if' ";
+			throw "'if'";
 		}
 	}else{
-		throw "Expected 'if' ";
+		throw "'if'";
 	}
 }
 
@@ -152,9 +150,9 @@ function elseif(){
 		if(exigir("{")){
 			body();
 			if(!exigir("}"))
-			throw "Expected '}'";
+			throw "'}'";
 		}else{
-			throw "Expected '{'";
+			throw "'{'";
 		}
 	}else{
 		return;
@@ -165,9 +163,8 @@ function elseif(){
 
 function while_expression(){
 	if(exigir("while")){
-
 	}else{
-		throw "Expected 'while'";
+		throw "'while'";
 	}
 }
 
