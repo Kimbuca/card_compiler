@@ -4,8 +4,14 @@ function syntactic_analysis(tokens){
 	
 	//Guardar tokens para que accedan todos los demas
 	index = 0;
-	
-	program();
+
+	try{
+
+		program();
+
+	}	catch (e){
+		toastr.error("Error in compilation: Expected " + e);
+	}
 
 };
 
@@ -16,19 +22,19 @@ function program(tokens){
 		   	 functions();
 		   	 main_function();
 		   	 if ( !exigir("}") ) {
-		   	   error("Expected '}'");
+		   	   throw "'}'";
 		   	 }
 	      }
 	      else {
-	    	error("Expected '{'");
+	    	throw "'{'";
 	      }
 	    }
 	    else {
-	      error("Expected 'program'");
+	      throw "'program'";
 	    }
 	  }
 	  else {
-	 	error("Expected 'class'");
+	 	throw "'class'";
 	  }
 }
 
@@ -45,10 +51,6 @@ function verificar(str){
 	return tokens[index] == str ? true : false;
 
 }
-
-function error(str){
-	toastr.error('Error in compilation: ' + str);
-};
 
 function functions(){
 
@@ -75,19 +77,19 @@ function functionSingle() {
     	if ( exigir ( "{"  ) ) {
       	body();
       	if ( !exigir( "}" ) ) {
-   	 	error("Expected '}'");
+   	 	throw "'}'";
    	   }
    	 } else {
-   	   error("Expected '{'");
+   	   throw "'{'";
    	 }
       } else {
-    	error("Expected ')'");
+    	throw "')'";
       }
     } else {
-      error("Expected '('");
+      throw "'('";
     }
   } else {
-	error("Expected 'void'");
+	throw "'void'";
   }
 }
 
@@ -97,7 +99,7 @@ function body(){
 }
 
 
-void body_alpha(){
+function body_alpha(){
 	if ( verificar ("void")){
 		 expression();
 		 body_alpha();
@@ -106,4 +108,12 @@ void body_alpha(){
 
 function main_function(){
 	
+}
+
+function name_function(){
+	if (exigir("hola")){
+		console.log("hola yei");
+	}else{
+		throw "'hola'";
+	}
 }
