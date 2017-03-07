@@ -3,7 +3,10 @@ function syntactic_analysis(tokens){
 	console.log(tokens);
 	//Guardar tokens para que accedan todos los demas
 	index = 0;
-
+	palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
+							"else", "void", "number_of_deck", "isRed", "isBlack", "isHeart",
+							"isclubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
+							"isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
 
 	try{
 
@@ -177,6 +180,18 @@ function official_function(){
 }
 
 function customer_function(){
+	if(palabras_reservadas.indexOf(tokens[index]) > -1){
+		index++;
+		if(exigir("(")){
+			if(!exigir(")")){
+				throw "')'";
+			}
+		}else{
+			throw "'('";
+		}
+	}else{
+		throw "'Function'";
+	}
   
 }
 
