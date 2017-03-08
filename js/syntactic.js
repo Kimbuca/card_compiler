@@ -1,73 +1,88 @@
+
+/**
+	Main Method
+**/
 function syntactic_analysis(tokens){
 
-  console.log(tokens);
-  //Guardar tokens para que accedan todos los demas
-  index = 0;
-  palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
-              "else", "void", "number_of_deck", "isRed", "isBlack", "isHeart",
-              "isclubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
-              "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
+	const palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
+			              "else", "void", "number_of_deck", "isRed", "isBlack", "isHeart",
+			              "isclubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
+			              "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
+
+	const IF 		= 10,
+		  JUMP 		= 20,
+		  WHILE 	= 30,
+		  ITERATE 	= 40,
+		  RETURN 	= 50,
+		  START 	= 60,
+		  FIN 		= 70,
+		  CALL 		= 80;
+
+
+
+	const FLIP 		= 100,
+		  ISBLACK   = 130,
+		  ISRED     = 140,
+		  ISHEART   = 150;
+
+
+	//Guardar tokens para que accedan todos los demas
+	var index = 0;
+	var codigo_intermedio = [];
+	var stack = [];
+
+	/**
+		Validation Functions
+	**/
+	function exigir(str){
+	  if(tokens[index] == str){
+	    index++;
+	    return true;
+	  };
+	  return false;
+	}
+
+	function verificar(str){
+	  return tokens[index] == str ? true : false;
+	}
+
+
 
   try{
-
     program();
-
   } catch (e){
     toastr.error("Error in compilation: Expected " + e);
   }
-
 };
 
-
-
 function program(tokens){
-    if ( exigir("class") ) {
-      if ( exigir("program") ) {
-        if ( exigir("{") ) {
-         functions();
-         main_function();
-         if ( !exigir("}") ) {
-
-           throw "'}'";
-         }
-        }
-        else {
-        throw "'{'";
-        }
-      }
-      else {
-        throw "'program'";
-      }
-    }
-    else {
-    throw "'class'";
-    }
-}
-
-
-function exigir(str){
-  if(tokens[index] == str){
-    index++;
-    return true;
-  };
-  return false;
-}
-
-function verificar(str){
-  return tokens[index] == str ? true : false;
+	if ( exigir("class") ) {
+	  if ( exigir("program") ) {
+	    if ( exigir("{") ) {
+	     functions();
+	     main_function();
+	     if ( !exigir("}") ) {
+	       throw "'}'";
+	     }}
+	    else {
+	    throw "'{'";
+	    }}
+	  else {
+	    throw "'program'";
+	  }}
+	else {
+	throw "'class'";}
 }
 
 function functions(){
-
-    if(verificar("void")){
-     functionSingle();
-     functions_alpha();
-    }
-
+	if(verificar("void")){
+	 functionSingle();
+	 functions_alpha();
+	}
 }
 
 function functions_alpha() {
-  if ( verificar( "void" ) ) {
+  if (verificar( "void" )){
     functionSingle();
     functions_alpha();
   }
@@ -107,7 +122,6 @@ function body(){
     body_alpha();
 }
 
-
 function body_alpha(){
   if ( verificar ("void")){
      expression();
@@ -125,7 +139,7 @@ function expression(){
   }
   else if(verificar("while")){
     while_expression();
-  }else if(verificar("iterate"){
+  }else if(verificar("iterate")){
     iterate_expression();
   }else{
     call_function();
@@ -203,7 +217,7 @@ function if_expression(){
     if(exigir("(")){
       conditional();
       if(!exigir(")"))
-        return throw "')'";
+       	throw "')'";
       if(exigir("{")){
         body();
         if(!exigir("}"))
@@ -279,9 +293,9 @@ function iterative_expression(){
 }
 
 function conditional(){
-  if(verificar"VALUE"){
+  if(verificar("VALUE")){
     card_composed_conditional();
-  }else if(verificar("isEmpty"){
+  }else if(verificar("isEmpty")){
     deck_simple_condition();
   }else{
     card_simple_condition();
