@@ -20,21 +20,24 @@ function syntactic_analysis(tokens){
 
 
 
-	const FLIP 		= 100,
-		  ISBLACK   = 130,
-		  ISRED     = 140,
-		  ISHEART   = 150;
+	const ISEMPTY 		= 100,
+		  ISNOTEMPTY 	= 110,
+		  ISBLACK   	= 130,
+		  ISRED     	= 140,
+		  ISHEART   	= 150;
 
 
 	//Guardar tokens para que accedan todos los demas
 	var index = 0;
 	var codigo_intermedio = [];
 	var stack = [];
+	var i 	  = 0;
 
 	/**
 		Validation Functions
 	**/
 	function exigir(str){
+	console.log("my token" +tokens[index])
 	  if(tokens[index] == str){
 	    index++;
 	    return true;
@@ -47,28 +50,28 @@ function syntactic_analysis(tokens){
 	}
 
 
+	console.log(tokens);
+
 
   try{
     program();
   } catch (e){
     toastr.error("Error in compilation: Expected " + e);
   }
-};
 
 function program(tokens){
 	if ( exigir("class") ) {
 	  if ( exigir("program") ) {
 	    if ( exigir("{") ) {
-	     functions();
-	     main_function();
-	     if ( !exigir("}") ) {
-	       throw "'}'";
-	     }}
+		   functions();
+		   main_function();
+	       if (!exigir("}")){
+	       		throw "'}'";
+	 	   }}
 	    else {
-	    throw "'{'";
-	    }}
-	  else {
-	    throw "'program'";
+	    	throw "'{'";
+	    }}else {
+	    	throw "'program'";
 	  }}
 	else {
 	throw "'class'";}
@@ -118,19 +121,33 @@ function functionSingle() {
 }
 
 function body(){
-    expression();
-    body_alpha();
+	body_alpha();  
+	expression();
 }
 
 function body_alpha(){
   if ( verificar ("void")){
-     expression();
+     //expression();
      body_alpha();
   }
 }
 
 function main_function(){
-  
+	if(exigir("program")){
+		if(exigir("(")){
+			if(!exigir(")"))
+				throw "')'";
+			if(exigir("{")){
+				body();
+				if(!exigir("}"))
+					throw "'}'";
+			}else{
+				throw "'{'";
+			}
+		}else
+			throw "'('";
+	}else
+		throw "'program'";
 }
 
 function expression(){
@@ -213,12 +230,16 @@ function number_of_deck(){
 
 function if_expression(){
 
-  if(exigir("if")){
+if(exigir("if")){
+	codigo_intermedio[i++] = IF; //0
     if(exigir("(")){
       conditional();
+      codigo_intermedio[i++] = ISNOTEMPTY; 	// Verificar condicional despues 1
       if(!exigir(")"))
        	throw "')'";
       if(exigir("{")){
+      	codigo_intermedio[i++] = JUMP; 		// agrega el JUMP
+      	stack.push(i++) 					// pushea mi posicion actual y queda "reservada", el iterador se mueve con lo que contenga body
         body();
         if(!exigir("}"))
           throw "'}'";
@@ -239,13 +260,19 @@ function elseif(){
 
   if(verificar("else")){
     if(exigir("{")){
+      codigo_intermedio[i++] = JUMP;     	// JUMP 
+      codigo_intermedio[stack.pop()] = i+1; // cod[3] = 4    --> usa mi espacio reservado del if para guardar a donde tengo que brincar si es false la condicion
+      stack.push(i++);						// stack.push(4) --> reserva mi posicion actual (la pasada) y a continuacion y haz todo lo siguiente 
       body();
       if(!exigir("}"))
-      throw "'}'";
+      	throw "'}'";
+      codigo_intermedio[stack.pop()] = i; 	// ahora dile a mi posicion reservada (cod[4]) a donde debe ir en caso de que el elseif sea falso
     }else{
       throw "'{'";
     }
   }else{
+  	codigo_intermedio[stack.pop()] = i++;	//si no hubo else o fue falso mi if
+  											// solo popea en la posicion reservada y pon a donde brinco despues (siempre es un espacio adelante)
     return;
   }
 
@@ -254,14 +281,22 @@ function elseif(){
 
 function while_expression(){
 	if(exigir("while")){
+    stack.push(i);
+    codigo_intermedio[i++] = WHILE;
 		if(exigir("(")){
 			conditional();
 			if(!exigir(")"))
 				throw "')'";
 			if(exigir("{")){
-				body();
-				if(!exigir("}"))
+        		codigo_intermedio[i++] = JUMP;
+				stack.push(i++);
+        		body();
+				if(!exigir("}")){
 					throw "'}'";
+	       		}
+		        codigo_intermedio[i++]= JUMP;
+		        codigo_intermedio[pop()]= i+1;
+		        codigo_intermedio[i++]= pop();
 			}else{
 				throw "'}'";
 			}
@@ -459,3 +494,5 @@ function deck_simple_condition(){
     }
   }
 }
+
+};
