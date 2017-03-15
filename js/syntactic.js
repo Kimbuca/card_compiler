@@ -12,7 +12,7 @@ function syntactic_analysis(tokens){
 	const IF 		= 10,
 		  JUMP 		= 20,
 		  WHILE 	= 30,
-		  ITERATE 	= 40,
+		  ITERATE = 40,
 		  RETURN 	= 50,
 		  START 	= 60,
 		  FIN 		= 70,
@@ -33,17 +33,34 @@ function syntactic_analysis(tokens){
 	var stack = [];
 	var i 	  = 0;
 
+  var symbolTable = [];
+
+
+  function addSymbol(symName, pos){
+    symbolTable.push({name: symName, position:pos})
+  }
+
+  //aid method to check if symbol is in table and returns position
+  function containsSymbol(symName){
+    for(i in symbolTable){
+      if(symbolTable[i].name == symName)
+        return symbolTable[i].position;
+    }
+    return false
+  }
+
 	/**
 		Validation Functions
 	**/
 	function exigir(str){
-	console.log("my token" +tokens[index])
+  addSymbol(str, index);
 	  if(tokens[index] == str){
 	    index++;
 	    return true;
 	  };
 	  return false;
 	}
+
 
 	function verificar(str){
 	  return tokens[index] == str ? true : false;
@@ -55,6 +72,7 @@ function syntactic_analysis(tokens){
     program();
   } catch (e){
     toastr.error("Error in compilation: Expected " + e);
+    console.log(symbolTable);
   }
 
 function program(){
