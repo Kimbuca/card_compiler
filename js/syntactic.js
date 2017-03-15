@@ -6,7 +6,7 @@ function syntactic_analysis(tokens){
 
 	const palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
 			              "else", "void", "number_of_deck", "isRed", "isBlack", "isHeart",
-			              "isclubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
+			              "isClubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
 			              "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
 
 	const IF 		= 10,
@@ -16,15 +16,25 @@ function syntactic_analysis(tokens){
 		  RETURN 	= 50,
 		  START 	= 60,
 		  FIN 		= 70,
-		  CALL 		= 80;
+		  CALL 		= 80,
+      CUSTOMER = 90;
 
 
 
 	const ISEMPTY 		= 100,
-		  ISNOTEMPTY 	= 110,
-		  ISBLACK   	= 130,
-		  ISRED     	= 140,
-		  ISHEART   	= 150;
+		  ISNOTEMPTY 	  = 110,
+		  ISBLACK   	  = 130,
+		  ISRED     	  = 140,
+		  ISHEART   	  =  150,
+      ISCLUBS       = 160,
+      ISDIAMOND     = 170,
+      ISSPADES      = 180,
+      ISNOTRED      = 190,
+      ISNOTBLACK    = 200,
+      ISNOTHEART    = 210,
+      ISNOTCLUBS    = 220,
+      ISNOTDIAMOND  = 230,
+      ISNOTPADES    = 240;
 
 
 	//Guardar tokens para que accedan todos los demas
@@ -53,7 +63,6 @@ function syntactic_analysis(tokens){
 		Validation Functions
 	**/
 	function exigir(str){
-  addSymbol(str, index);
 	  if(tokens[index] == str){
 	    index++;
 	    return true;
@@ -115,11 +124,13 @@ function verificar_number(){
 function functionSingle() {
   if ( exigir( "void" ) ) {
     // Aqui va en nombre de la function para hacerla
-    name_function();
+    addSymbol(tokens[index], i);
+    codigo_intermedio[i++] = CUSTOMER;
     if ( exigir( "(" ) ) {
       if ( exigir ( ")" ) ) {
       if ( exigir ( "{"  ) ) {
         body();
+        codigo_intermedio[i++] = RETURN;
         if ( !exigir( "}" ) ) {
       throw "'}'";
        }
