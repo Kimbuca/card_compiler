@@ -49,9 +49,7 @@ function syntactic_analysis(tokens){
 	  return tokens[index] == str ? true : false;
 	}
 
-
 	console.log(tokens);
-
 
   try{
     program();
@@ -59,7 +57,7 @@ function syntactic_analysis(tokens){
     toastr.error("Error in compilation: Expected " + e);
   }
 
-function program(tokens){
+function program(){
 	if ( exigir("class") ) {
 	  if ( exigir("program") ) {
 	    if ( exigir("{") ) {
@@ -67,13 +65,14 @@ function program(tokens){
 		   main_function();
 	       if (!exigir("}")){
 	       		throw "'}'";
-	 	   }}
-	    else {
+	 	   }
+      }else {
 	    	throw "'{'";
-	    }}else {
+	    }
+    }else {
 	    	throw "'program'";
-	  }}
-	else {
+	  }
+  }else {
 	throw "'class'";}
 }
 
