@@ -1,7 +1,3 @@
-
-/**
-	Main Method
-**/
 function syntactic_analysis(tokens){
 
 	const palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
@@ -26,21 +22,21 @@ function syntactic_analysis(tokens){
 		  ISRED     	= 140,
 		  ISHEART   	= 150;
 
-
 	//Guardar tokens para que accedan todos los demas
 	var index = 0;
 	var codigo_intermedio = [];
 	var stack = [];
 	var i 	  = 0;
 
+  /**
+    Symbol Table Functions
+  **/
   var symbolTable = [];
-
 
   function addSymbol(symName, pos){
     symbolTable.push({name: symName, position:pos})
   }
 
-  //aid method to check if symbol is in table and returns position
   function containsSymbol(symName){
     for(i in symbolTable){
       if(symbolTable[i].name == symName)
@@ -54,27 +50,32 @@ function syntactic_analysis(tokens){
 	**/
 	function exigir(str){
   addSymbol(str, index);
-	  if(tokens[index] == str){
+	  if(tokens[index].token == str){
 	    index++;
 	    return true;
 	  };
 	  return false;
 	}
 
-
 	function verificar(str){
-	  return tokens[index] == str ? true : false;
+	  return tokens[index].token == str ? true : false;
 	}
-
 	console.log(tokens);
 
+  /**
+    Program Call
+  **/
   try{
     program();
   } catch (e){
-    toastr.error("Error in compilation: Expected " + e);
+    toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
     console.log(symbolTable);
   }
 
+
+  /**
+    Syntactic Analysis
+  **/
 function program(){
 	if ( exigir("class") ) {
 	  if ( exigir("program") ) {
@@ -334,12 +335,19 @@ function while_expression(){
 function iterative_expression(){
   if(exigir("iterate")){
     if(exigir("(")){
+      codigo_intermedio[i++] = ITERATE;
       conditional();
+      //valor 5
+      //codigo_intermedio[]
+
       if(!exigir(")")){
         throw "')'";
       }
       if(exigir("{")){
+        begin = i;
         body();
+        codigo_intermedio[i++] = JUMP;
+        codigo_intermedio[i++] = begin;        
         if(!exigir("}")){
           throw "'}'";
         }

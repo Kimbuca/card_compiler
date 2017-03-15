@@ -35,7 +35,7 @@ function symbMap(sym){
 		return 4;
 	else if(sym == "=")
 		return 5;
-	else if(sym == " ")
+	else if(sym == " " || sym === '\n')
 		return 6;
 	else
 		return 7;
@@ -56,33 +56,33 @@ function scanner(str){
 		return this.tokens;
 	}
 
-	this.addToken = function(start, end){
+	this.addToken = function(line, start, end){
 		var word = str.substring(start, end);
-		this.tokens.push(word);
+		this.tokens.push({token: word, line: line});
 	}
 
 	this.analyze = function (){
 		var CURR_STATE = i = state = word_ind = 0;					// initializaton;
 		var SIZE = this.program.length;
+		var line = 1;
 			
 		while(state != ERR && i <= SIZE){	
 
 			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going next'
  			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token
- 			//console.log("I am " +str.charAt(i) +" on state " +CURR_STATE +" looking to GO " +NEXT_STATE);
- 			//console.log(" MY STATUS is " +state);
 
+ 			if(str.charAt(i) === '\n') line++;
 			CURR_STATE 	= NEXT_STATE;								// update current state if it was not an error state
 
 			switch(state){
 
 				case ACPT:
-					this.addToken(word_ind, i+1);					// 
+					this.addToken(line, word_ind, i+1);					// 
 					word_ind = i+1;									// mvoes iterator 
 					break;
 
 				case ACCB:
-					this.addToken(word_ind, i);						//stores in a range and doesnt move iterator
+					this.addToken(line, word_ind, i);						//stores in a range and doesnt move iterator
 					word_ind=i;								
 					i--;											// dont move iterator
 					break;
@@ -93,11 +93,11 @@ function scanner(str){
 			}
 
 			if( i == SIZE)		
-				return toastr.success('Success Compilation	');
+				return;
 			i++;			
 		}
 		//"Error UNEXPECTED CHAR "+str.charAt(i-1)
-		return 	toastr.error('Error in compilation');
+		return 	toastr.error('Unexpected char in line ' +line +": " +str.charAt(i-1));
 	};
 }
 //returns the data structure containing all the tokens
