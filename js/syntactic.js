@@ -56,7 +56,7 @@ function syntactic_analysis(tokens){
       if(symbolTable[i].name == symName)
         return symbolTable[i].position;
     }
-    return false
+    return false;
   }
 
 	/**
@@ -198,8 +198,10 @@ function call_function(){
 function name_of_function(){
   if(verificar("flip") | verificar("getCard") | verificar("putCard")){
     official_function();
-  }else{
+  }else if(palabras_reservadas.indexOf(tokens[index]) > -1){
     customer_function();
+  }else{
+    return;
   }
 }
 
@@ -236,7 +238,15 @@ function official_function(){
 }
 
 function customer_function(){
-  if(palabras_reservadas.indexOf(tokens[index]) > -1){
+
+  var contains = containsSymbol(tokens[index]);
+  if(!contains){
+    throw 'No function specified for ' +tokens[index];
+  }else{   
+    //en contains esta la posicion del symbolo
+    codigo_intermedio[i++] = CALL;
+    codigo_intermedio[i++] = contains;
+
     index++;
     if(exigir("(")){
       if(!exigir(")")){
@@ -245,10 +255,7 @@ function customer_function(){
     }else{
       throw "'('";
     }
-  }else{
-    throw "'Function'";
   }
-  
 }
 
 function number_of_deck(){
@@ -303,7 +310,6 @@ function elseif(){
   											// solo popea en la posicion reservada y pon a donde brinco despues (siempre es un espacio adelante)
     return;
   }
-
 }
 
 
