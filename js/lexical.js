@@ -71,7 +71,10 @@ function scanner(str){
 			NEXT_STATE 	= transition(CURR_STATE, str.charAt(i)); 				// w/ current state and char: 'where am I going next'
  			state = accept_states[CURR_STATE][symbMap(str.charAt(i))];   		// maps in accepted states table to see if it can form a token
 
- 			if(str.charAt(i) === '\n') line++;
+ 			if(str.charAt(i) === '\n'){
+ 				console.log("salto")
+ 				line++;
+ 			}
 			CURR_STATE 	= NEXT_STATE;								// update current state if it was not an error state
 
 			switch(state){
