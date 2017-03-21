@@ -20,9 +20,11 @@ function myFunction() {
 
     //lexicography
     var lex = new scanner(array);
-    console.log(lex.analyze());	
+    lex.analyze();	
     tokens = lex.getTokens();
-    console.log(tokens);
+
+    for(i in tokens)
+        console.log(tokens[i].token);
     syntactic_analysis(tokens);
     
     document.getElementById("demo").innerHTML = array;

@@ -5,6 +5,21 @@ class program {
 }
 
 
+//probar el function call
+class program {
+    void func(){
+        flip
+    }
+	program(){
+		func
+	}
+}
+
+
+
+
+
+
 
 class program {
     program() {
