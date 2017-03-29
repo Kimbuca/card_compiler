@@ -86,6 +86,7 @@ function syntactic_analysis(tokens){
   **/
   try{
     program();
+    console.log("Codigo intermedio:"+ codigo_intermedio);
   } catch (e){
     toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
   } 
@@ -128,7 +129,7 @@ function functions_alpha() {
 }
 
 function verificar_number(){
-  return !isNaN(tokens[index]); 
+  return isNaN(tokens[index]); 
 }
 
 function functionSingle() {
@@ -210,7 +211,7 @@ function call_function(){
 }
 
 function name_of_function(){
- if(verificar("flip") | verificar("getCard") | verificar("putCard")){
+ if(verificar("flip") || verificar("getCard") || verificar("putCard")){
     official_function();
   }else if(palabras_reservadas.indexOf(tokens[index].token) == -1){
     customer_function();
@@ -232,10 +233,11 @@ function official_function(){
     }else{
         throw "'('";
     }
-  }else if(exigir("getCard") | exigir("putCard")){
+  }else if(exigir("getCard") || exigir("putCard")){
     if(exigir("(")){
       if(verificar_number()){
         if(number_of_deck()){
+          index++;
           if(!exigir(")")){
             throw "')'";
           }
@@ -269,7 +271,7 @@ function customer_function(){
 }
 
 function number_of_deck(){
-  return tokens[index] >= 0 && tokens[index] <= 52 ? true : false;
+  return tokens[index].token >= 0 && tokens[index].token <= 52 ? true : false;
 }
 
 
@@ -339,8 +341,8 @@ function while_expression(){
 					throw "'}'";
 	       		}
 		        codigo_intermedio[i++]= JUMP;
-		        codigo_intermedio[pop()]= i+1;
-		        codigo_intermedio[i++]= pop();
+		        codigo_intermedio[stack.pop()]= i+1;
+		        codigo_intermedio[i++]= stack.pop();
 			}else{
 				throw "'}'";
 			}
@@ -379,7 +381,7 @@ function iterate_expression(){
 function conditional(){
   if(verificar("VALUE")){
     card_composed_conditional();
-  }else if(verificar("isEmpty" | "isNotEmpty")){
+  }else if(verificar("isEmpty") || verificar("isNotEmpty")){
     deck_simple_condition();
   }else{
     card_simple_condition();
@@ -525,9 +527,13 @@ function deck_simple_condition(){
   if(verificar("isEmpty")){
     if(exigir("isEmpty")){
       if(exigir("(")){
-        number_of_deck();
-        if(!exigir(")")){
-          throw "')'";
+        if(number_of_deck()){
+          index++;
+          if(!exigir(")")){
+            throw "')'";
+          }
+        }else{
+          throw "number between 0-52";
         }
       }else{
         throw "'('";
@@ -536,17 +542,22 @@ function deck_simple_condition(){
       throw "'isEmpty'";
     }
   }else{
+    console.log("Got to the deck_simple_condition");
     if(exigir("isNotEmpty")){
       if(exigir("(")){
-        number_of_deck();
-        if(!exigir(")")){
-          throw "')'";
+        if(number_of_deck()){
+          index++;
+          if(!exigir(")")){
+            throw "')'";
+          }
+        }else{
+          throw "number between 0-52";
         }
       }else{
         throw "'('";
       }
     }else{
-      throw "'isEmpty'";
+      throw "'isNotEmpty'";
     }
   }
 }
