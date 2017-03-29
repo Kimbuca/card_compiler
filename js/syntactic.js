@@ -16,12 +16,9 @@ function syntactic_analysis(tokens){
         CUSTOMER = 90;
 
 //official functions
-
   const FLIP = 91,
         GETCARD = 92,
         PUTCARD = 93;
-
-
 
 
 
@@ -139,6 +136,7 @@ function functionSingle() {
     // Aqui va en nombre de la function para hacerla
     
     codigo_intermedio[i++] = CUSTOMER;
+    //foo // 3
     addSymbol(tokens[index].token, i);
 
     index++;                //move current token position
