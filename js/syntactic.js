@@ -110,7 +110,9 @@ function program(){
 	    	throw "'program'";
 	  }
   }else {
-	throw "'class'";}
+	throw "'class'";
+  }
+
 }
 
 function functions(){
@@ -536,7 +538,7 @@ function deck_simple_condition(){
       throw "'isEmpty'";
     }
   }else{
-    if(exigir("isNotEmpty")){
+    if(exigir("isNotEmpty")){   
       if(exigir("(")){
         number_of_deck();
         if(!exigir(")")){

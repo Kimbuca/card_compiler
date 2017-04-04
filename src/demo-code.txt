@@ -17,6 +17,37 @@ class program {
 
 
 
+class program {
+	program(){
+		while(isNotEmpty(0)){
+			getCard(0)
+			putCard(1)
+		}
+	}
+}
+<!--
+<div class= "container">
+
+	
+	<div class="row">
+
+		<div class="col-md-5">
+			<div class="form-group" id="left-side">
+		    <label for="exampleTextarea">Text Editor </label>
+		    <!--<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>-->
+		    <div id="editor"></div>
+		    <a class="btn btn-success" id="compile-button" onclick="myFunction()"> Execute </a>
+		</div>
+		</div>
+
+		<div class="col-md-7" id="canvas-container" style="background-color: green; height:500px">
+    <a class="btn btn-info animated infinite bounce" id="compile-button" onclick="clear()"> Clear Animation </a>
+		</div>
+	</div>
+	<p id="demo"></p>
+</div>
+
+
 
 
 
