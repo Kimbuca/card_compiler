@@ -95,6 +95,7 @@ const ISEQUAL          = 300,
   **/
   try{
     program();
+		console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
   } catch (e){
     toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
   }
