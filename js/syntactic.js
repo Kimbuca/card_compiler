@@ -5,45 +5,46 @@ function syntactic_analysis(tokens){
 			              					 "isClubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack",
 			              					 "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
 
-  const IF 		      = 10,
-  		  JUMP 		    = 20,
-  		  WHILE 	    = 30,
-  		  ITERATE     = 40,
-  		  RETURN 	    = 50,
-  		  START 	    = 60,
-  		  FIN 		    = 70,
-  		  CALL 		    = 80,
-        CUSTOMER    = 90;
+ const IF           = 100,
+        WHILE       = 110,
+        ITERATE     = 120
+        RETURN      = 130,
+        JUMP        = 160,
+        CALL        = 170,
+        RET         = 500,
+        FIN         = 1000;
 
 //official functions
-  const FLIP        = 91,
-        GETCARD     = 92,
-        PUTCARD     = 93;
+  const FLIP        = 330,
+        GETCARD     = 310,
+        PUTCARD     = 320;
+
+//
+  const ISEMPTY     = 350,
+        ISNOTEMPTY  = 351;
 
 
 //Conditionals
-	const ISEMPTY 		= 100,
-		  ISNOTEMPTY 	  = 110,
-		  ISBLACK   	  = 130,
-		  ISRED     	  = 140,
-		  ISHEART   	  = 150,
-      ISCLUBS       = 160,
-      ISDIAMOND     = 170,
-      ISSPADES      = 180,
-      ISNOTRED      = 190,
-      ISNOTBLACK    = 200,
-      ISNOTHEART    = 210,
-      ISNOTCLUBS    = 220,
-      ISNOTDIAMOND  = 230,
-      ISNOTSPADES    = 240;
+  const ISBLACK       = 201,
+        ISRED         = 202,
+        ISHEART       = 203,
+        ISCLUBS       = 204,
+        ISDIAMOND     = 205,
+        ISSPADES      = 206,
+        ISNOTRED      = 207,
+        ISNOTBLACK    = 208,
+        ISNOTHEART    = 209,
+        ISNOTCLUBS    = 210,
+        ISNOTDIAMOND  = 211,
+        ISNOTSPADES   = 212;
 
 //Operators
-const ISEQUAL          = 300,
-			ISNOTEQUAL     = 310,
-			LESSTHAN       = 320,
-			GREATERTHAN    = 330,
-			LESSOREQUAL    = 340,
-			GREATEROREQUAL = 350;
+const LESSTHAN       = 401,
+      GREATERTHAN    = 402,
+      LESSOREQUAL    = 403,
+      GREATEROREQUAL = 404,
+      ISEQUAL        = 405,
+      ISNOTEQUAL     = 406;
 
 
 	//Guardar tokens para que accedan todos los demas
@@ -90,13 +91,12 @@ const ISEQUAL          = 300,
 
 
 
-  /**
+  /**{}
     Program Call
   **/
   try{
     program();
-
-		console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
+    console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
 
   } catch (e){
     toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
@@ -110,6 +110,9 @@ function program(){
 	if ( exigir("class") ) {
 	  if ( exigir("program") ) {
 	    if ( exigir("{") ) {
+         codigo_intermedio[0] = JUMP;
+         codigo_intermedio[1] = 0;
+         i = 1;
 		   functions();
 		   main_function();
 	       if (!exigir("}")){
@@ -189,11 +192,14 @@ function body_alpha(){
 
 function main_function(){
 	if(exigir("program")){
+    i++;
+    codigo_intermedio[1]= i;
 		if(exigir("(")){
 			if(!exigir(")"))
 				throw "')'";
 			if(exigir("{")){
 				body();
+        codigo_intermedio[i++]= FIN;
 				if(!exigir("}"))
 					throw "'}'";
 			}else{
@@ -235,6 +241,7 @@ function name_of_function(){
 
 function official_function(){
   if(exigir("flip")){
+    codigo_intermedio[i++] = FLIP;
     if(exigir("(")){
       if(! exigir(")")){
         throw "')'";
@@ -247,9 +254,15 @@ function official_function(){
         throw "'('";
     }
   }else if(exigir("getCard") || exigir("putCard")){
+    if(tokens[index-1].token == "getCard"){
+      codigo_intermedio[i++] = GETCARD;
+    }else{
+      codigo_intermedio[i++] = PUTCARD;
+    }
     if(exigir("(")){
       if(verificar_number()){
         if(number_of_deck()){
+          codigo_intermedio[i++] = tokens[index].token;
           index++;
           if(!exigir(")")){
             throw "')'";
@@ -539,6 +552,7 @@ function deck_simple_condition(){
 			codigo_intermedio[i++] = ISEMPTY;
       if(exigir("(")){
         if(number_of_deck()){
+          codigo_intermedio[i++] = tokens[index].token;
           index++;
           if(!exigir(")")){
             throw "')'";
@@ -558,6 +572,7 @@ function deck_simple_condition(){
 			codigo_intermedio[i++] = ISNOTEMPTY;
       if(exigir("(")){
         if(number_of_deck()){
+          codigo_intermedio[i++] = tokens[index].token;
           index++;
           if(!exigir(")")){
             throw "')'";
