@@ -144,7 +144,7 @@ function functions_alpha() {
 
 function verificar_number(){
 
-  return isNaN(tokens[index]); 
+  return isNaN(tokens[index]);
 
 }
 
@@ -152,7 +152,6 @@ function functionSingle() {
   if ( exigir( "void" ) ) {
     // Aqui va en nombre de la function para hacerla
 
-    codigo_intermedio[i++] = CUSTOMER;
     //foo // 3
     addSymbol(tokens[index].token, i);
 
@@ -186,8 +185,14 @@ function body(){
 }
 
 function body_alpha(){
-  if(verificar("if") | verificar("while") | verificar("iterate") | verificar("flip") | verificar("putCard") | verificar("getCard"))
+  if(verificar("if") | verificar("while") | verificar("iterate") | verificar("flip") | verificar("putCard") | verificar("getCard") | containsSymbol(tokens[index].token)){
     expression();
+		body_alpha();
+	}
+	else{
+		return
+	}
+
 }
 
 function main_function(){
@@ -237,6 +242,8 @@ function name_of_function(){
   }else{
     return;
   }
+
+
 }
 
 function official_function(){
