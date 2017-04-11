@@ -4,19 +4,19 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
-  <link rel="stylesheet" type="text/css" href="css/card.css" />
-  <link rel="stylesheet" type="text/css" href="css/toastr.css">
+	<link rel="stylesheet" type="text/css" href="css/card.css" />
+	<link rel="stylesheet" type="text/css" href="css/toastr.css">
 
 	<!-- import del editor de texto desde CDN-->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" charset="utf-8"></script>
 
-  <!-- Bootstrap -->
+	<!-- Bootstrap -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
-  <!-- Notifications Toastr -->
-  <script type="text/javascript" src="js/toastr.js"></script>
+	<!-- Notifications Toastr -->
+	<script type="text/javascript" src="js/toastr.js"></script>
 
 	<title> Card Compiler </title>
 </head>
@@ -26,22 +26,24 @@
 <div id= "main-container">
 	<div class="row">
 		<div class="col-md-4">
-			<div class="form-group" >
-		    <h2 id="header"> Card Compiler </h2>
-       	 	<h5> The following code was done if you would like to see the full implementation please visit our repo at <a id="link" href="https://github.com/Kimbuca/card_compiler">Github</a></h5>
+			<div>
+			    <h2 id="header"> Card Compiler </h2>
+	       	 	<h5> The following code was done if you would like to see the full implementation please visit our repo at <a id="link" href="https://github.com/Kimbuca/card_compiler">Github</a></h5>
         	</div>
 		    <div id="editor"></div>
-		    <a class="btn btn-success" id="compile-button" onclick="myFunction()"> Execute </a>
-        <a class="btn btn-info" id="reset-button"> Reset Animation </a>
+		    <div class="button-container">
+	        	<a class="btn btn-info" id="reset-button"> Reset Animation </a>
+        		<a class="btn btn-success" id="compile-button" onclick="myFunction()"> Execute </a>
+        	</div>
 		</div>
 		<div class="col-md-8" >
-      <div id="canvas-container">
-       <div class="card back"><img src="src/img/card-back.png"></div>
-      <div class="card template">
-        <span class="rank"></span>
-        <span class="suit"></span>
-      </div>
-     </div>
+	      	<div id="canvas-container">
+		       	<div class="card back"><img src="src/img/card-back.png"></div>
+		      	<div class="card template">
+			        <span class="rank"></span>
+			        <span class="suit"></span>
+		      	</div>
+	     	</div>
 		</div>
 	</div>
 </div>

@@ -9,7 +9,7 @@ function Card(suit, rank) {
 	this.card.removeClass("template");
 	this.card.find(".rank").html(rank);
   	this.card.find(".suit").html("&"+suit+";");
-
+ 
 	if( suit === "hearts" || suit === "diams" ) {
 	    this.card.addClass("red");
 	}
@@ -21,10 +21,18 @@ function Card(suit, rank) {
 
 	this.put = function(deck){
 		var pos = $(`#plot${deck}`).position();
+
+		$(this.card).css("z-index", deck);
   		$(this.card).animate({ 
   			'top': pos.top,
-  			'left': pos.left }, 700, function(){
-    		});
+  			'left': pos.left}, 700, function(algo){
+
+  			$(this).appendTo(`#plot${deck}`);
+  			$(this).css("left", "initial");
+  			$(this).css("top", "initial");
+
+  			console.log("ya termine");
+    	});
 	}
 }
 
@@ -50,7 +58,6 @@ function Deck() {
 		    var randIndex = Math.floor( Math.random() * deck.length );
 		    card = deck.splice( randIndex, 1 )[0];
 	  	}
-
 	  	if(!card){
 	  		resetCanvas();
 	  	}
