@@ -9,15 +9,21 @@ function syntactic_analysis(tokens){
 			              "isclubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack", 
 			              "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
 
-	const IF 		= 10,
-		  JUMP 		= 20,
-		  WHILE 	= 30,
-		  ITERATE = 40,
-		  RETURN 	= 50,
-		  START 	= 60,
-		  FIN 		= 70,
-		  CALL 		= 80;
+  const IF 		= 10,
+  		  JUMP 		= 20,
+  		  WHILE 	= 30,
+  		  ITERATE = 40,
+  		  RETURN 	= 50,
+  		  START 	= 60,
+  		  FIN 		= 70,
+  		  CALL 		= 80,
+        CUSTOMER = 90;
+        END = 500;
 
+//official functions
+  const FLIP = 91,
+        GETCARD = 92,
+        PUTCARD = 93;
 
 
 	const ISEMPTY 		= 100,
@@ -114,9 +120,14 @@ function verificar_number(){
 
 function functionSingle() {
   if ( exigir( "void" ) ) {
-    // Aqui va en nombre de la function para hacerla void FA(){}
-    name_function();
-    if ( exigir( "(" ) ) {
+
+    codigo_intermedio[i++] = CUSTOMER;
+    //foo // 3
+    addSymbol(tokens[index].token, i);
+
+    index++;                //move current token position
+
+    if ( exigir("(") ) {
       if ( exigir ( ")" ) ) {
       if ( exigir ( "{"  ) ) {
         body();
@@ -354,7 +365,7 @@ function iterate_expression(){
 function conditional(){
   if(verificar("VALUE")){
     card_composed_conditional();
-  }else if(verificar("isEmpty")){
+  }else if(verificar("isEmpty") || verificar("isNotEmpty")){
     deck_simple_condition();
   }else{
     card_simple_condition();
