@@ -1,7 +1,3 @@
-
-/**
-	Main Method
-**/
 function syntactic_analysis(tokens){
 
 	const palabras_reservadas = ["class", "program", "main", "body", "if", "while", "iterate",
@@ -57,27 +53,29 @@ const LESSTHAN       = 401,
 	var stack = [];
   var i = 0;
 
-  var symbolTable = [];
 
+  /**
+    Symbol Table Functions
+  **/
+  var symbolTable = [];
 
   function addSymbol(symName, pos){
     symbolTable.push({name: symName, position:pos})
   }
 
-  //aid method to check if symbol is in table and returns position
   function containsSymbol(symName){
     for(i in symbolTable){
       if(symbolTable[i].name == symName)
         return symbolTable[i].position;
     }
-    return false
+    //addSymbol(str, index);
+    return false;
   }
 
 	/**
 		Validation Functions
 	**/
 	function exigir(str){
-
 
     console.log("comparing " +tokens[index].token +" AND " +str);
 	  if(tokens[index].token == str){
@@ -87,12 +85,11 @@ const LESSTHAN       = 401,
 	  return false;
 	}
 
-
 	function verificar(str){
-	  return tokens[index] == str ? true : false;
+	  return tokens[index].token == str ? true : false;
 	}
 
-	console.log(tokens);
+
 
   /**{}
     Program Call
@@ -105,6 +102,10 @@ const LESSTHAN       = 401,
     toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
   }
 
+
+  /**
+    Syntactic Analysis
+  **/
 function program(){
 	if ( exigir("class") ) {
 	  if ( exigir("program") ) {
@@ -130,8 +131,8 @@ function program(){
 function functions(){
 	if(verificar("void")){
 	 functionSingle();
-	 functions_alpha();
 	}
+  functions_alpha();
 }
 
 function functions_alpha() {
@@ -151,6 +152,7 @@ function functionSingle() {
   if ( exigir( "void" ) ) {
     // Aqui va en nombre de la function para hacerla
 
+    codigo_intermedio[i++] = CUSTOMER;
     //foo // 3
     addSymbol(tokens[index].token, i);
 
@@ -160,6 +162,7 @@ function functionSingle() {
       if ( exigir ( ")" ) ) {
       if ( exigir ( "{"  ) ) {
         body();
+        codigo_intermedio[i++] = RETURN;
         if ( !exigir( "}" ) ) {
       throw "'}'";
        }
@@ -178,20 +181,13 @@ function functionSingle() {
 }
 
 function body(){
-
   expression();
 	body_alpha();
 }
 
 function body_alpha(){
-  if(verificar("if") | verificar("while") | verificar("iterate") | verificar("flip") | verificar("putCard") | verificar("getCard") | containsSymbol(tokens[index].token)){
+  if(verificar("if") | verificar("while") | verificar("iterate") | verificar("flip") | verificar("putCard") | verificar("getCard"))
     expression();
-		body_alpha();
-	}
-	else{
-		return
-	}
-
 }
 
 function main_function(){
@@ -229,17 +225,18 @@ function expression(){
 }
 
 function call_function(){
+  console.log("estoy en call function" +tokens[index].token);
   name_of_function();
 }
 
 function name_of_function(){
  if(verificar("flip") || verificar("getCard") || verificar("putCard")){
     official_function();
-  }else{
+  }else if(palabras_reservadas.indexOf(tokens[index].token) == -1){
     customer_function();
+  }else{
+    return;
   }
-
-
 }
 
 function official_function(){
@@ -249,7 +246,9 @@ function official_function(){
       if(! exigir(")")){
         throw "')'";
       }else{
-        flip();
+        codigo_intermedio[i++] = FLIP;
+        console.log(codigo_intermedio);
+        console.log("Haz un flip");
       }
     }else{
         throw "'('";
@@ -283,6 +282,7 @@ function official_function(){
 }
 
 function customer_function(){
+
   var symbol =  tokens[index].token;
   var contains = containsSymbol(symbol);
   if(contains === false){
@@ -293,17 +293,7 @@ function customer_function(){
     i += 2;
     console.log(codigo_intermedio);
     index++;
-    if(exigir("(")){
-      if(!exigir(")")){
-        throw "')'";
-      }
-    }else{
-      throw "'('";
-    }
-  }else{
-    throw "'Function'";
   }
-  
 }
 
 function number_of_deck(){
@@ -342,7 +332,6 @@ if(exigir("if")){
 function elseif(){
 
   if(verificar("else")){
-    index++;
     if(exigir("{")){
       codigo_intermedio[i++] = JUMP;     	// JUMP
       codigo_intermedio[stack.pop()] = i+1; // cod[3] = 4    --> usa mi espacio reservado del if para guardar a donde tengo que brincar si es false la condicion
@@ -359,7 +348,6 @@ function elseif(){
   											// solo popea en la posicion reservada y pon a donde brinco despues (siempre es un espacio adelante)
     return;
   }
-
 }
 
 
@@ -393,23 +381,22 @@ function while_expression(){
 }
 
 function iterate_expression(){
-  if(exigir("for")){
-    codigo_intermedio[i++] = 40;
+  if(exigir("iterate")){
     if(exigir("(")){
-      stack.push(i);
-      conditional();
+      codigo_intermedio[i++] = ITERATE;
+      number();
+
       if(!exigir(")")){
         throw "')'";
       }
       if(exigir("{")){
+        begin = i;
+        body();
         codigo_intermedio[i++] = JUMP;
         codigo_intermedio[i++] = begin;
         if(!exigir("}")){
           throw "'}'";
         }
-        codigo_intermedio[i++]= JUMP;
-        codigo_intermedio[stack.pop()]= i+1;
-        codigo_intermedio[i++] = stack.pop();
       }
     }
   }else {
