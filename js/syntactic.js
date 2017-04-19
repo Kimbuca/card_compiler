@@ -342,6 +342,7 @@ if(exigir("if")){
 function elseif(){
 
   if(verificar("else")){
+    index++;
     if(exigir("{")){
       codigo_intermedio[i++] = JUMP;     	// JUMP
       codigo_intermedio[stack.pop()] = i+1; // cod[3] = 4    --> usa mi espacio reservado del if para guardar a donde tengo que brincar si es false la condicion
