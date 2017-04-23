@@ -5,7 +5,7 @@ function syntactic_analysis(tokens){
 			              					 "isClubs", "isDiamond", "isSpades", "isNotRed", "isNotBlack",
 			              					 "isNotHeart", "isNotClubs", "isNotDiamond", "isNotSpades"];
 
- const IF           = 100,
+ const  IF          = 100,
         WHILE       = 110,
         ITERATE     = 120
         RETURN      = 130,
@@ -46,6 +46,8 @@ const LESSTHAN       = 401,
       ISEQUAL        = 405,
       ISNOTEQUAL     = 406;
 
+  
+  var symbolTable = [];
 
 	//Guardar tokens para que accedan todos los demas
 	var index = 0;
@@ -55,9 +57,21 @@ const LESSTHAN       = 401,
 
 
   /**
+    Program Call
+  **/
+  try{
+    program();
+    console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
+    return codigo_intermedio;
+
+  } catch (e){
+    toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
+  }
+
+
+  /**
     Symbol Table Functions
   **/
-  var symbolTable = [];
 
   function addSymbol(symName, pos){
     symbolTable.push({name: symName, position:pos})
@@ -89,20 +103,6 @@ const LESSTHAN       = 401,
 	  return tokens[index].token == str ? true : false;
 	}
 
-
-
-  /**{}
-    Program Call
-  **/
-  try{
-    program();
-    console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
-
-  } catch (e){
-    toastr.error("Error in compilation: Expected " +e +" in line " +tokens[index].line);
-  }
-
-
   /**
     Syntactic Analysis
   **/
@@ -125,7 +125,8 @@ function program(){
 	    	throw "'program'";
 	  }
   }else {
-	throw "'class'";}
+	throw "'class'";
+  }
 }
 
 function functions(){
@@ -214,8 +215,7 @@ function main_function(){
 function expression(){
   if(verificar("if")){
     if_expression();
-  }
-  else if(verificar("while")){
+  }else if(verificar("while")){
     while_expression();
   }else if(verificar("iterate")){
     iterate_expression();

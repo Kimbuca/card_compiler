@@ -37,8 +37,8 @@ class program {
 
 	program() {
 		while ( isNotEmpty(0) ) { 
-			flip 
-            		getCard(0)
+            getCard(0)
+            putCard(2)
           }  
 	}
 }

@@ -1,24 +1,35 @@
+body {
+    --border-card: 4px;
+  }
+
 .card {
-  display:inline;
-  position: absolute;
+  display: inline;
+  position: absolute !important;
   text-align:center;
   margin: 3px;
-  padding: 2.5em 1em 3em 1em;
   width:  8% ;
   height: 16% ;
-  
   font-size:16px;
-  background-color: white;
-  border: solid 1px black;
-  border-radius: 3.5px;
 }
 
-.card.back {
-  padding: 0;
+.card > .front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  position: absolute;  
+  z-index: 1;
+  border-radius: var(--border-card);
+}
+
+.card > .back {
+  position: absolute;  
+  z-index: 0;
+  overflow: hidden;
+  border-radius: var(--border-card);
 }
 
 .red {
-  border: solid 1px #e20000;
   color:#e20000;
 }
 
