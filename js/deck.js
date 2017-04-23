@@ -7,11 +7,13 @@ function Card(suit, rank) {
 	this.card.removeClass("template");
 	this.card.find(".rank").html(rank);
   	this.card.find(".suit").html("&"+suit+";");
-  	this.card.flip({
+  	this.card.flip({//trigger: 'manual'
   	});
  
 	if( suit === "hearts" || suit === "diams" ) {
 	    this.card.addClass("red");
+	}else{
+		this.card.addClass("black");
 	}
 
 	$(this.card).appendTo("#plot1");
@@ -20,18 +22,21 @@ function Card(suit, rank) {
 	this.rank = rank,
 
 	this.put = function(deck){
-		var pos = $(`#plot${deck}`).position();
-		console.log("Fuera ", this);
+		let pos = $(`#plot${deck}`).position();
+		let parentDeckPos = this.card.parent().position();
 		let self = this;
+
 		$(this.card).css("z-index", deck);
+		$(this.card).css("top", parentDeckPos.top);
+		$(this.card).css("left", parentDeckPos.left);
+
   		$(this.card).animate({ 
   			'top': pos.top,
-  			'left': pos.left}, 800, function() {
+  			'left': pos.left
+  		}, 800, function() {
 
   			$(this).appendTo(`#plot${deck}`);
-  			$(this).css("left", "initial");
-  			$(this).css("top", "initial");
-  			setTimeout(() => self.flip(), 100);
+  			setTimeout(() => self.flip(), 250);
     	});
 	}
 

@@ -1,9 +1,9 @@
-const PLOT_NUMBER = 55;
+const PLOT_NUMBER = 53;
 
 plotGrid();
 
 function createPlot(number) {	
-  newplot= $(`<span id="plot${number}"></span>`);
+  newplot= $(`<span class="deck-space" id="plot${number}"> ${number-1} </span>`);
   return newplot;
 
 }

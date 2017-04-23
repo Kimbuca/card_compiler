@@ -3,6 +3,7 @@ html, body {
 	width: auto;
 	margin: 0;
 	background-color: #e5e5e5;
+	
 }
 
 img {
@@ -29,6 +30,26 @@ img {
     text-align: right;
 }
 
+.deck-space{
+
+	border: 1px solid rgb(50, 136, 50);
+	border-radius: 2px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 6px;
+	margin-top: 6px;
+	margin-bottom: 12px;
+	text-align: center;	
+
+	font-weight: bold;
+	font-size: 24px;
+	font-variant: small-caps;
+	color: rgb(0, 119, 0);
+
+}
+
+
 #compile-button{
 	
 }
@@ -36,7 +57,6 @@ img {
 #reset-button{
 	
 }
-
 #canvas-container{
 	height: 80vh;
 	margin-top: 5vh;
