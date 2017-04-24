@@ -145,6 +145,97 @@ function execIntermediateCod(input){
 				deck = codInt[++i];
 				return actualDecks[deck].size() == 0;
 			}
+			case ISBLACK:{
+				i++;
+				if(current_card.suit == "clubs" || current_card.suit == "spades"){
+					return true;
+				}
+				return false;
+			} 
+			case ISRED:{
+				i++;
+				if(current_card.suit == "hearts" || current_card.suit == "diams"){
+					return true;
+				}
+				return false;	
+			}
+			case ISHEART:{
+				i++;
+				return current_card == "hearts";
+			}
+			case ISCLUBS:{
+				i++;
+				return current_card == "clubs";
+			}
+			case ISDIAMOND:{
+				i++;
+				return current_card == "diams";
+			}
+			case ISSPADES:{
+				i++;
+				return current_card == "spades";
+			}
+			case ISNOTHEART:{
+				i++;
+				return !(current_card == "hearts");
+			}
+			case ISNOTCLUBS:{
+				i++;
+				return !(current_card == "clubs");
+			}
+			case ISNOTDIAMOND: {
+				i++;
+				return !(current_card == "diams");
+			}
+			case ISNOTSPADES: {
+				i++;
+				return !(current_card == "spades");
+			}
+			default:{
+				composed_condition();
+			}
+		}
+	}
+
+	function composed_condition(){
+		int num1 = codInt[i];
+		int num2 =0;
+		i++;
+		switch(codInt[i]){
+			case LESSTHAN:{
+				i++;
+				num2 = codInt[i];
+				i++;
+				return num1 < num2;
+			}
+			case GREATERTHAN: {
+				i++;
+				num2= codInt[i];
+				i++;
+				return num1 > num2;
+			}
+			case LESSOREQUAL:{
+				i++;
+				num2= codInt[i];
+				i++;
+				return num1 <= num2;
+			}
+			case GREATEROREQUAL:{
+				i++;
+				num2= codInt[i];
+				return num1 >= num2;
+			}
+			case ISEQUAL:{
+				i++;
+				num2= codInt[i];
+				i++;
+				return num1 == num2;
+			}
+			case ISNOTEQUAL:{
+				i++;
+				num2= codInt[i];
+				return num1 != num2;
+			}
 		}
 	}
 
