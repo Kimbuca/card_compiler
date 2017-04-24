@@ -7,7 +7,12 @@ var editor;
 	editor.getSession().setMode("ace/mode/javascript");
 
 	editor.getSession().setTabSize(4);
-	editor.setValue("class program {}");
+
+	var prevProgram = localStorage.getItem("cardCompiler:D");
+	if(prevProgram){
+		editor.setValue(prevProgram, -1);
+	}
+	
 })();
 
 

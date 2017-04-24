@@ -1,8 +1,11 @@
-//var i = 0;
 console.log("Creando nuevo deck");
 var MainDeck = new Deck(); //deck 0
-var Decks = [];  //starts in 1
+var Decks;
 var current_card;
+var codInt;
+var count = 1000;
+var isFlipping = false;
+
 
 const 	IF          = 100,
         WHILE       = 110,
@@ -48,109 +51,129 @@ const LESSTHAN       = 401,
 const END = 1000;
 
 
-
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,13,310,0,320,2,160,2,1000
 
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,11,310,0,160,2,1000
+function initializeDecks (len) {
+	return Array.from({ length: len }, () => new Array());
+}
 
 function execIntermediateCod(input){
 
 	let i = 0;
-	let codInt = input.map(cod => parseInt(cod));
-	console.log("CODE", codInt);
+	let codInt = input.map(input => parseInt(input));
+	Decks = initializeDecks(52);
+	runProgram(codInt);
 
-	while(codInt[i]!=END){	
-		//debugger;
-		console.log("Running.. ", codInt[i]);
-		switch(codInt[i]){
-			case JUMP:{
-				i++;
-				console.log("JUMPING TO.. ", codInt[i]);
-				i = codInt[i];
-				break;
-			}
-			case IF:{
-				i++;
-				//If true en el conditional saltate el jump de salto de todo
-				if(runConditional()){
-					i = i+3;
-				}else{
-					i++;
+	function runProgram(){
+
+		if(codInt[i]!=END){	
+			//debugger;
+			console.log("Running.. ", codInt[i]);
+			switch(codInt[i]){
+				case JUMP:{
+					console.log("JUMPING TO.. ", codInt[i+1]);
+					i = codInt[++i];
+					runProgram();
+					break;
 				}
-				break;
-			}
-
-			case ISNOTEMPTY:{
-				if(runConditional()){
-					i = i+3;
-				}else{
+				case IF:{
 					i++;
+					if(runConditional()){
+						i = i+3;
+					}else{
+						i++;
+					}
+					runProgram();
+					break;
 				}
-				break;
-			}
 
-			case WHILE: {
-				i++;
-				break;
-			}
+				case ISNOTEMPTY:{
+					if(runConditional()){
+						i = i+3;
+					}else{
+						i++;
+					}
+					runProgram();
+					break;
+				}
 
-			case GETCARD:{
-				i++;
-				var deck = codInt[i];
-				console.log("Traer carta de ", deck);
-				runGetCard(deck);
-				i++;
-				break;
-			}
+				case WHILE: {
+					i++;
+					runProgram();
+					break;
+				}
 
-			/*
-			case PUTCARD:{
-				var deck = codInt[++i];
-				console.log("Poner carta en ", deck);
-				runPutCard(deck);
-				i++;
-				break;
-			}*/
+				case GETCARD:{
+					var deck = codInt[++i];
+					i++;
+					console.log("Traer carta de ", deck);
+					runGetCard(deck);
+					runProgram();
+					break;
+				}
+
+				case PUTCARD:{
+					var deck = codInt[++i];
+					console.log("Poner carta en ", deck);
+					runPutCard(deck);
+					i++;
+					setTimeout(runProgram, count);
+					break;
+				}
+
+				case FLIP:{
+					runFlipCard();
+					setTimeout(runProgram, 1000);
+					break;
+				}
+			}
+			return;
+		}else{
+			//finish
+			//clearInterval(animationTimer);
 		}
 	}
 
 	function runConditional(){
 		switch(codInt[i]){
 			case ISNOTEMPTY:{
-				i++;
-				var current_deck = codInt[i];
-				console.log("is not empty deck: ", current_deck, " ? ");
-				console.log(MainDeck.deck.length);
+				var current_deck = codInt[++i];
 				return MainDeck.deck.length != 0;
-				
 			}
 			case ISEMPTY:{
-				i++;
-				deck = codInt[i];
+				deck = codInt[++i];
 				return actualDecks[deck].size() == 0;
 			}
 		}
 	}
 
-
 	function runGetCard(deck_num){
-		console.log("GET CARD", deck_num);
-
 		if(deck_num == 0){
 			current_card = MainDeck.getCard();
 		}else{
-			console.log(Deck[deck_num].length);
 			current_card = Decks[deck_num].pop();
 		}
 	}
 
 	function runPutCard(deck_num){
 		if(current_card){
-			decks[deck_num] = current_card;
-			current_card.putCard(deck_num);
+			current_card.put(deck_num);
+			Decks[deck_num].push(current_card);
+				
+		}else{
+			throw "There is no card in your hand to put";
+		}
+	}
+
+	function runFlipCard(){
+		if(current_card){
+			current_card.show(1);
+			setTimeout(() => current_card.flip(), 500);
+			//current_card.flip();
+			i++;
 		}else{
 			throw "There is no card in your hand to put";
 		}
 	}
 }
-

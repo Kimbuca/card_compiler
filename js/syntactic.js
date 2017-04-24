@@ -46,7 +46,7 @@ const LESSTHAN       = 401,
       ISEQUAL        = 405,
       ISNOTEQUAL     = 406;
 
-  
+
   var symbolTable = [];
 
 	//Guardar tokens para que accedan todos los demas
@@ -152,13 +152,10 @@ function verificar_number(){
 function functionSingle() {
   if ( exigir( "void" ) ) {
     // Aqui va en nombre de la function para hacerla
-
     codigo_intermedio[i++] = CUSTOMER;
-    //foo // 3
     addSymbol(tokens[index].token, i);
 
     index++;                //move current token position
-
     if ( exigir("(") ) {
       if ( exigir ( ")" ) ) {
       if ( exigir ( "{"  ) ) {
@@ -187,8 +184,12 @@ function body(){
 }
 
 function body_alpha(){
-  if(verificar("if") | verificar("while") | verificar("iterate") | verificar("flip") | verificar("putCard") | verificar("getCard"))
+  if(verificar("if") || verificar("while") || verificar("iterate") || verificar("flip") || verificar("putCard") || verificar("getCard")){
     expression();
+  }else{
+    return;
+  }
+  body_alpha();
 }
 
 function main_function(){
@@ -225,12 +226,12 @@ function expression(){
 }
 
 function call_function(){
-  console.log("estoy en call function" +tokens[index].token);
+  console.log("estoy en call function ->>" +tokens[index].token);
   name_of_function();
 }
 
 function name_of_function(){
- if(verificar("flip") || verificar("getCard") || verificar("putCard")){
+  if(verificar("flip") || verificar("getCard") || verificar("putCard")){
     official_function();
   }else if(palabras_reservadas.indexOf(tokens[index].token) == -1){
     customer_function();
@@ -242,17 +243,8 @@ function name_of_function(){
 function official_function(){
   if(exigir("flip")){
     codigo_intermedio[i++] = FLIP;
-    if(exigir("(")){
-      if(! exigir(")")){
-        throw "')'";
-      }else{
-        codigo_intermedio[i++] = FLIP;
-        console.log(codigo_intermedio);
-        console.log("Haz un flip");
-      }
-    }else{
-        throw "'('";
-    }
+    console.log(codigo_intermedio);
+    console.log("Haz un flip");
   }else if(exigir("getCard") || exigir("putCard")){
     if(tokens[index-1].token == "getCard"){
       codigo_intermedio[i++] = GETCARD;
@@ -279,6 +271,7 @@ function official_function(){
   }else{
     throw "'Function'";
   }
+  return;
 }
 
 function customer_function(){

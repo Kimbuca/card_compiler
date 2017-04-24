@@ -1,7 +1,5 @@
 window.onload = function(){   
-
     //promtUserIntermediate();
-
 }
 
 function myFunction() {
@@ -14,14 +12,14 @@ function myFunction() {
     lex.analyze();
     tokens = lex.getTokens();
 
-    for(i in tokens)
-        console.log(tokens[i].token);
-    
     var intermedCod = syntactic_analysis(tokens);
-    console.log(intermedCod);
     if(intermedCod != null){
         execIntermediateCod(intermedCod);
     } 
+
+    var currentProgram = editor.getValue();
+    localStorage.setItem("cardCompiler:D", currentProgram);
+
 }
 
 function promtUserIntermediate(){

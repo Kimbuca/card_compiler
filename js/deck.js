@@ -16,29 +16,32 @@ function Card(suit, rank) {
 		this.card.addClass("black");
 	}
 
-	$(this.card).appendTo("#plot1");
+	$(this.card).appendTo("#plot0");
 
 	this.suit = suit,
 	this.rank = rank,
 
-	this.put = function(deck){
-		let pos = $(`#plot${deck}`).position();
-		let parentDeckPos = this.card.parent().position();
-		let self = this;
 
-		$(this.card).css("z-index", deck);
+	this.show = function(top) {
+		let parentDeckPos = this.card.parent().position();
+
+		$(this.card).css("z-index", top);
 		$(this.card).css("top", parentDeckPos.top);
 		$(this.card).css("left", parentDeckPos.left);
+	}
 
+	this.put = function(deck){
+		let pos = $(`#plot${deck}`).position();
+		let self = this;
+		this.show(deck);
   		$(this.card).animate({ 
   			'top': pos.top,
   			'left': pos.left
-  		}, 800, function() {
-
+  		}, 500, function() {
+  			$(self.card).css("z-index", deck-1);
   			$(this).appendTo(`#plot${deck}`);
-  			setTimeout(() => self.flip(), 250);
     	});
-	}
+	},
 
 	this.flip = function(){
 		this.card.flip('toggle');
@@ -64,20 +67,15 @@ function Deck() {
 		    var randIndex = Math.floor( Math.random() * this.deck.length );
 		    card = this.deck.splice( randIndex, 1 )[0];
 	  	}
-	  	/*
-	  	if(!card){
-	  		resetCanvas();
-	  	}*/
-
   		return new Card(card.suit, card.rank);
   	};
+
 };
 
 var myDeck = new Deck();
-var i = 1;
+var i = 0;
 $("#reset-button").click(function () {
 		var card = myDeck.getCard();
 		card.put(++i);
-		//setTimeout(() => card.put(++i), 1000);
 	}
 );

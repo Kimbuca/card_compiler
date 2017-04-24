@@ -1,15 +1,15 @@
-const PLOT_NUMBER = 53;
+const PLOT_NUMBER = 52;
 
 plotGrid();
 
 function createPlot(number) {	
-  newplot= $(`<span class="deck-space" id="plot${number}"> ${number-1} </span>`);
+  newplot= $(`<span class="deck-space" id="plot${number}"> ${number} </span>`);
   return newplot;
 
 }
 
 function plotGrid() {
-	for(var i=1; i<=PLOT_NUMBER; i++){
+	for(var i=0; i<=PLOT_NUMBER; i++){
 		plot = createPlot(i);
 		$('#canvas-container').append(plot);
 	}
