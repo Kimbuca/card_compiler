@@ -18,16 +18,19 @@ function Card(suit, rank) {
 
 	$(this.card).appendTo("#plot0");
 
+	let parentDeckPos = this.card.parent().position();
+	$(this.card).css("top", parentDeckPos.top);
+	$(this.card).css("left",  parentDeckPos.left);
+
 	this.suit = suit,
 	this.rank = rank,
 
 
 	this.show = function(top) {
-		let parentDeckPos = this.card.parent().position();
-
+		//let parentDeckPos = this.card.parent().position();
 		$(this.card).css("z-index", top);
-		$(this.card).css("top", parentDeckPos.top);
-		$(this.card).css("left", parentDeckPos.left);
+		//$(this.card).css("top", parentDeckPos.top);
+		//$(this.card).css("left", parentDeckPos.left);
 	}
 
 	this.put = function(deck){

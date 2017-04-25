@@ -13,6 +13,8 @@ function myFunction() {
     tokens = lex.getTokens();
 
     var intermedCod = syntactic_analysis(tokens);
+
+    console.log(intermedCod)
     if(intermedCod != null){
         execIntermediateCod(intermedCod);
     } 

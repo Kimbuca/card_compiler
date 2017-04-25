@@ -1,4 +1,3 @@
-console.log("Creando nuevo deck");
 var MainDeck = new Deck(); //deck 0
 var Decks;
 var current_card;
@@ -6,54 +5,9 @@ var codInt;
 var count = 1000;
 var isFlipping = false;
 
-
-const 	IF          = 100,
-        WHILE       = 110,
-        ITERATE     = 120
-        RETURN      = 130,
-        JUMP        = 160,
-        CALL        = 170,
-        RET         = 500,
-        FIN         = 1000;
-
-//official functions
-  const FLIP        = 330,
-        GETCARD     = 310,
-        PUTCARD     = 320;
-
-//
-  const ISEMPTY     = 350,
-        ISNOTEMPTY  = 351;
-
-
-//Conditionals
-  const ISBLACK       = 201,
-        ISRED         = 202,
-        ISHEART       = 203,
-        ISCLUBS       = 204,
-        ISDIAMOND     = 205,
-        ISSPADES      = 206,
-        ISNOTRED      = 207,
-        ISNOTBLACK    = 208,
-        ISNOTHEART    = 209,
-        ISNOTCLUBS    = 210,
-        ISNOTDIAMOND  = 211,
-        ISNOTSPADES   = 212;
-
-//Operators
-const LESSTHAN       = 401,
-      GREATERTHAN    = 402,
-      LESSOREQUAL    = 403,
-      GREATEROREQUAL = 404,
-      ISEQUAL        = 405,
-      ISNOTEQUAL     = 406;
-
-const END = 1000;
-
-
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,13,310,0,320,2,160,2,1000
-
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,11,310,0,160,2,1000
+
 function initializeDecks (len) {
 	return Array.from({ length: len }, () => new Array());
 }
@@ -67,17 +21,22 @@ function execIntermediateCod(input){
 
 	function runProgram(){
 
-		if(codInt[i]!=END){	
+		if(codInt[i]!=Keys.END){	
 			//debugger;
+			if(codInt[i] == undefined){
+				i++;
+				runProgram()
+			}
+
 			console.log("Running.. ", codInt[i]);
 			switch(codInt[i]){
-				case JUMP:{
+				case Keys.JUMP:{
 					console.log("JUMPING TO.. ", codInt[i+1]);
 					i = codInt[++i];
 					runProgram();
 					break;
 				}
-				case IF:{
+				case Keys.IF:{
 					i++;
 					if(runConditional()){
 						i = i+3;
@@ -88,7 +47,7 @@ function execIntermediateCod(input){
 					break;
 				}
 
-				case ISNOTEMPTY:{
+				case Keys.ISNOTEMPTY:{
 					if(runConditional()){
 						i = i+3;
 					}else{
@@ -98,13 +57,13 @@ function execIntermediateCod(input){
 					break;
 				}
 
-				case WHILE: {
+				case Keys.WHILE: {
 					i++;
 					runProgram();
 					break;
 				}
 
-				case GETCARD:{
+				case Keys.GETCARD:{
 					var deck = codInt[++i];
 					i++;
 					console.log("Traer carta de ", deck);
@@ -113,7 +72,7 @@ function execIntermediateCod(input){
 					break;
 				}
 
-				case PUTCARD:{
+				case Keys.PUTCARD:{
 					var deck = codInt[++i];
 					console.log("Poner carta en ", deck);
 					runPutCard(deck);
@@ -122,14 +81,38 @@ function execIntermediateCod(input){
 					break;
 				}
 
-				case FLIP:{
+				case Keys.FLIP:{
 					runFlipCard();
 					setTimeout(runProgram, 1000);
+					break;
+				}
+
+				case Keys.ISBLACK:{
+					console.log("Carta ",i  ,"es negra?");
+					if(runConditional()){
+						i = i+2;
+					}else{
+						i++;
+					}
+					runProgram();
+					break;
+				}
+
+				case Keys.ISRED: {
+					if(runConditional()){
+						i = i+2;
+					}else{
+						current_card = 
+						i++;
+					}
+					runProgram();
 					break;
 				}
 			}
 			return;
 		}else{
+
+
 			//finish
 			//clearInterval(animationTimer);
 		}
@@ -137,57 +120,57 @@ function execIntermediateCod(input){
 
 	function runConditional(){
 		switch(codInt[i]){
-			case ISNOTEMPTY:{
+			case Keys.ISNOTEMPTY:{
 				var current_deck = codInt[++i];
 				return MainDeck.deck.length != 0;
 			}
-			case ISEMPTY:{
+			case Keys.ISEMPTY:{
 				deck = codInt[++i];
 				return actualDecks[deck].size() == 0;
 			}
-			case ISBLACK:{
+			case Keys.ISBLACK:{
 				i++;
 				if(current_card.suit == "clubs" || current_card.suit == "spades"){
 					return true;
 				}
 				return false;
 			} 
-			case ISRED:{
+			case Keys.ISRED:{
 				i++;
 				if(current_card.suit == "hearts" || current_card.suit == "diams"){
 					return true;
 				}
-				return false;	
+				return false;
 			}
-			case ISHEART:{
+			case Keys.ISHEART:{
 				i++;
 				return current_card == "hearts";
 			}
-			case ISCLUBS:{
+			case Keys.ISCLUBS:{
 				i++;
 				return current_card == "clubs";
 			}
-			case ISDIAMOND:{
+			case Keys.ISDIAMOND:{
 				i++;
 				return current_card == "diams";
 			}
-			case ISSPADES:{
+			case Keys.ISSPADES:{
 				i++;
 				return current_card == "spades";
 			}
-			case ISNOTHEART:{
+			case Keys.ISNOTHEART:{
 				i++;
 				return !(current_card == "hearts");
 			}
-			case ISNOTCLUBS:{
+			case Keys.ISNOTCLUBS:{
 				i++;
 				return !(current_card == "clubs");
 			}
-			case ISNOTDIAMOND: {
+			case Keys.ISNOTDIAMOND: {
 				i++;
 				return !(current_card == "diams");
 			}
-			case ISNOTSPADES: {
+			case Keys.ISNOTSPADES: {
 				i++;
 				return !(current_card == "spades");
 			}
@@ -198,40 +181,40 @@ function execIntermediateCod(input){
 	}
 
 	function composed_condition(){
-		int num1 = codInt[i];
-		int num2 =0;
+		var num1 = codInt[i];
+		var num2 =0;
 		i++;
 		switch(codInt[i]){
-			case LESSTHAN:{
+			case Keys.LESSTHAN:{
 				i++;
 				num2 = codInt[i];
 				i++;
 				return num1 < num2;
 			}
-			case GREATERTHAN: {
+			case Keys.GREATERTHAN: {
 				i++;
 				num2= codInt[i];
 				i++;
 				return num1 > num2;
 			}
-			case LESSOREQUAL:{
+			case Keys.LESSOREQUAL:{
 				i++;
 				num2= codInt[i];
 				i++;
 				return num1 <= num2;
 			}
-			case GREATEROREQUAL:{
+			case Keys.GREATEROREQUAL:{
 				i++;
 				num2= codInt[i];
 				return num1 >= num2;
 			}
-			case ISEQUAL:{
+			case Keys.ISEQUAL:{
 				i++;
 				num2= codInt[i];
 				i++;
 				return num1 == num2;
 			}
-			case ISNOTEQUAL:{
+			case Keys.ISNOTEQUAL:{
 				i++;
 				num2= codInt[i];
 				return num1 != num2;
@@ -261,7 +244,6 @@ function execIntermediateCod(input){
 		if(current_card){
 			current_card.show(1);
 			setTimeout(() => current_card.flip(), 500);
-			//current_card.flip();
 			i++;
 		}else{
 			throw "There is no card in your hand to put";

@@ -6,7 +6,7 @@ var editor;
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/javascript");
 
-	editor.getSession().setTabSize(4);
+	editor.getSession().setTabSize(2);
 
 	var prevProgram = localStorage.getItem("cardCompiler:D");
 	if(prevProgram){
