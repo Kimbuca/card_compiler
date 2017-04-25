@@ -143,7 +143,7 @@ function execIntermediateCod(input){
 			return;
 		}else{
 			console.log("Finishing");
-			toastr.success("Finished, reseting in 3 seconds");
+			toastr.success("Finished, restarting in 3 seconds");
 			setTimeout(function(){ location.reload(); }, 3000);
 
 		}

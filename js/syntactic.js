@@ -65,6 +65,7 @@ const LESSTHAN       = 401,
 		codigo_intermedio.push(FIN);
     console.log("Symbol Table:");
     console.log(symbolTable.length);
+    toastr.success("Success Compilation");
     return codigo_intermedio;
 
   } catch (e){
