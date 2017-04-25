@@ -62,6 +62,7 @@ const LESSTHAN       = 401,
   try{
     program();
     console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
+		codigo_intermedio.push(FIN);
     return codigo_intermedio;
 
   } catch (e){
@@ -112,7 +113,7 @@ function program(){
 	    if ( exigir("{") ) {
          codigo_intermedio[0] = JUMP;
          codigo_intermedio[1] = 0;
-         i = 1;
+         i = 2;
 		   functions();
 		   main_function();
 	       if (!exigir("}")){
@@ -195,13 +196,12 @@ function body_alpha(){
 function main_function(){
 	if(exigir("program")){
     i++;
-    codigo_intermedio[1]= i;
+    codigo_intermedio[1]= i-1;
 		if(exigir("(")){
 			if(!exigir(")"))
 				throw "')'";
 			if(exigir("{")){
 				body();
-        codigo_intermedio[i++]= FIN;
 				if(!exigir("}"))
 					throw "'}'";
 			}else{

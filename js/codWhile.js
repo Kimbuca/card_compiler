@@ -4,6 +4,7 @@ var current_card;
 var codInt;
 var count = 1000;
 var isFlipping = false;
+var lastCall;
 
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,13,310,0,320,2,160,2,1000
 //CODIGO INTERMEDIO: 160,2,110,351,0,160,11,310,0,160,2,1000
@@ -21,7 +22,7 @@ function execIntermediateCod(input){
 
 	function runProgram(){
 
-		if(codInt[i]!=Keys.END){	
+		if(codInt[i]!=Keys.FIN){
 			//debugger;
 			if(codInt[i] == undefined){
 				i++;
@@ -113,9 +114,25 @@ function execIntermediateCod(input){
 					if(runConditional()){
 						i = i+2;
 					}else{
-						current_card = 
+						current_card =
 						i++;
 					}
+					runProgram();
+					break;
+				}
+
+				case Keys.CALL:{
+					console.log("Try CALL");
+					i++;
+					i = codInt[i];
+					console.log("indice: ", i);
+					lastCall = i+1;
+					runProgram();
+					break;
+				}
+
+				case Keys.RETURN:{
+					i = lastCall;
 					runProgram();
 					break;
 				}
@@ -123,9 +140,6 @@ function execIntermediateCod(input){
 			return;
 		}else{
 			console.log("Finishing");
-			
-			//finish
-			//clearInterval(animationTimer);
 		}
 	}
 
@@ -145,7 +159,7 @@ function execIntermediateCod(input){
 					return true;
 				}
 				return false;
-			} 
+			}
 			case Keys.ISRED:{
 				i++;
 				if(current_card.suit == "hearts" || current_card.suit == "diams"){
@@ -245,7 +259,7 @@ function execIntermediateCod(input){
 		if(current_card){
 			current_card.put(deck_num);
 			Decks[deck_num].push(current_card);
-				
+
 		}else{
 			throw "There is no card in your hand to put";
 		}
