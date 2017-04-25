@@ -122,7 +122,7 @@ function execIntermediateCod(input){
 				}
 
 				case Keys.CALL:{
-					//console.log("Try CALL");
+					console.log("Try CALL");
 					i++;
 					lastCall = i+1;
 					i = codInt[i];
@@ -143,6 +143,9 @@ function execIntermediateCod(input){
 			return;
 		}else{
 			console.log("Finishing");
+			toastr.success("Finished, reseting in 3 seconds");
+			setTimeout(function(){ location.reload(); }, 3000);
+
 		}
 	}
 
@@ -157,50 +160,50 @@ function execIntermediateCod(input){
 				return actualDecks[deck].size() == 0;
 			}
 			case Keys.ISBLACK:{
-				i++;
+				//i++;
 				if(current_card.suit == "clubs" || current_card.suit == "spades"){
 					return true;
 				}
 				return false;
 			}
 			case Keys.ISRED:{
-				i++;
+				//i++;
 				if(current_card.suit == "hearts" || current_card.suit == "diams"){
 					return true;
 				}
 				return false;
 			}
 			case Keys.ISHEART:{
-				i++;
-				return current_card == "hearts";
+				//i++;
+				return current_card.suit == "hearts";
 			}
 			case Keys.ISCLUBS:{
-				i++;
-				return current_card == "clubs";
+				//i++;
+				return current_card.suit == "clubs";
 			}
 			case Keys.ISDIAMOND:{
-				i++;
-				return current_card == "diams";
+				//i++;
+				return current_card.suit == "diams";
 			}
 			case Keys.ISSPADES:{
-				i++;
-				return current_card == "spades";
+				//i++;
+				return current_card.suit == "spades";
 			}
 			case Keys.ISNOTHEART:{
-				i++;
-				return !(current_card == "hearts");
+				//i++;
+				return !(current_card.suit == "hearts");
 			}
 			case Keys.ISNOTCLUBS:{
-				i++;
-				return !(current_card == "clubs");
+				//i++;
+				return !(current_card.suit == "clubs");
 			}
 			case Keys.ISNOTDIAMOND: {
-				i++;
-				return !(current_card == "diams");
+				//i++;
+				return !(current_card.suit == "diams");
 			}
 			case Keys.ISNOTSPADES: {
-				i++;
-				return !(current_card == "spades");
+				//i++;
+				return !(current_card.suit == "spades");
 			}
 			default:{
 				composed_condition();
@@ -216,19 +219,19 @@ function execIntermediateCod(input){
 			case Keys.LESSTHAN:{
 				i++;
 				num2 = codInt[i];
-				i++;
+				//i++;
 				return num1 < num2;
 			}
 			case Keys.GREATERTHAN: {
 				i++;
 				num2= codInt[i];
-				i++;
+				//i++;
 				return num1 > num2;
 			}
 			case Keys.LESSOREQUAL:{
 				i++;
 				num2= codInt[i];
-				i++;
+				//i++;
 				return num1 <= num2;
 			}
 			case Keys.GREATEROREQUAL:{
@@ -239,7 +242,7 @@ function execIntermediateCod(input){
 			case Keys.ISEQUAL:{
 				i++;
 				num2= codInt[i];
-				i++;
+				//i++;
 				return num1 == num2;
 			}
 			case Keys.ISNOTEQUAL:{

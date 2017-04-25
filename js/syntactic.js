@@ -300,7 +300,7 @@ if(exigir("if")){
 	codigo_intermedio[i++] = IF; //0
     if(exigir("(")){
       conditional();
-      codigo_intermedio[i++] = ISNOTEMPTY; 	// Verificar condicional despues 1
+      //codigo_intermedio[i++] = ISNOTEMPTY; 	// Verificar condicional despues 1
       if(!exigir(")"))
        	throw "')'";
       if(exigir("{")){
@@ -325,6 +325,7 @@ if(exigir("if")){
 function elseif(){
 
   if(verificar("else")){
+		index++;
     if(exigir("{")){
       codigo_intermedio[i++] = JUMP;     	// JUMP
       codigo_intermedio[stack.pop()] = i+1; // cod[3] = 4    --> usa mi espacio reservado del if para guardar a donde tengo que brincar si es false la condicion
