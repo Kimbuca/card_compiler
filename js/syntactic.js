@@ -109,6 +109,12 @@ const LESSTHAN       = 401,
   function verificarC(){
     console.log("Looking for: " + tokens[index].token);
     console.log("Cantidad de customs: " + symbolTable.length);
+
+    for(j in symbolTable){
+      if(tokens[index].token == symbolTable[j].name)
+        return true;
+    }
+
     return false;
   }
   /**
@@ -202,8 +208,8 @@ function body_alpha(){
 
 function main_function(){
 	if(exigir("program")){
-    i++;
-    codigo_intermedio[1]= i-1;
+    //i++;
+    codigo_intermedio[1]= i;
 		if(exigir("(")){
 			if(!exigir(")"))
 				throw "')'";
@@ -288,7 +294,7 @@ function customer_function(){
   if(contains === false){
     throw 'No function specified for ' +tokens[index].token;
   }else{
-    codigo_intermedio[i-1] = CALL;
+    codigo_intermedio[i++] = CALL;
     codigo_intermedio[i++] = contains;
     //i += 2;
     console.log(codigo_intermedio);
