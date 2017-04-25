@@ -63,6 +63,8 @@ const LESSTHAN       = 401,
     program();
     console.log("CODIGO INTERMEDIO: " + codigo_intermedio);
 		codigo_intermedio.push(FIN);
+    console.log("Symbol Table:");
+    console.log(symbolTable.length);
     return codigo_intermedio;
 
   } catch (e){
@@ -79,9 +81,9 @@ const LESSTHAN       = 401,
   }
 
   function containsSymbol(symName){
-    for(i in symbolTable){
-      if(symbolTable[i].name == symName)
-        return symbolTable[i].position;
+    for(j in symbolTable){
+      if(symbolTable[j].name == symName)
+        return symbolTable[j].position;
     }
     //addSymbol(str, index);
     return false;
@@ -104,6 +106,11 @@ const LESSTHAN       = 401,
 	  return tokens[index].token == str ? true : false;
 	}
 
+  function verificarC(){
+    console.log("Looking for: " + tokens[index].token);
+    console.log("Cantidad de customs: " + symbolTable.length);
+    return false;
+  }
   /**
     Syntactic Analysis
   **/
@@ -185,7 +192,7 @@ function body(){
 }
 
 function body_alpha(){
-  if(verificar("if") || verificar("while") || verificar("iterate") || verificar("flip") || verificar("putCard") || verificar("getCard")){
+  if(verificar("if") || verificar("while") || verificar("iterate") || verificar("flip") || verificar("putCard") || verificar("getCard") || verificarC() ){
     expression();
   }else{
     return;
@@ -256,6 +263,7 @@ function official_function(){
         if(number_of_deck()){
           codigo_intermedio[i++] = tokens[index].token;
           index++;
+          //console.log(codigo_intermedio);
           if(!exigir(")")){
             throw "')'";
           }
@@ -275,15 +283,14 @@ function official_function(){
 }
 
 function customer_function(){
-
   var symbol =  tokens[index].token;
   var contains = containsSymbol(symbol);
   if(contains === false){
     throw 'No function specified for ' +tokens[index].token;
   }else{
-    codigo_intermedio.push(CALL);
-    codigo_intermedio.push(contains);
-    i += 2;
+    codigo_intermedio[i-1] = CALL;
+    codigo_intermedio[i++] = contains;
+    //i += 2;
     console.log(codigo_intermedio);
     index++;
   }
