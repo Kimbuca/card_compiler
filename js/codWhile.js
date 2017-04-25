@@ -122,17 +122,20 @@ function execIntermediateCod(input){
 				}
 
 				case Keys.CALL:{
-					console.log("Try CALL");
+					//console.log("Try CALL");
 					i++;
-					i = codInt[i];
-					console.log("indice: ", i);
 					lastCall = i+1;
+					i = codInt[i];
+					//console.log("indice: ", i);
+
+					//console.log("LAST CALL: ", lastCall);
 					runProgram();
 					break;
 				}
 
 				case Keys.RETURN:{
 					i = lastCall;
+					console.log("Return to: ", i);
 					runProgram();
 					break;
 				}
