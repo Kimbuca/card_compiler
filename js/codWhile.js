@@ -144,7 +144,7 @@ function execIntermediateCod(input){
 		}else{
 			console.log("Finishing");
 			toastr.success("Finished, reseting in 3 seconds");
-			//setTimeout(function(){ location.reload(); }, 3000);
+			setTimeout(function(){ location.reload(); }, 3000);
 
 		}
 	}
