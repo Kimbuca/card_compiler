@@ -152,7 +152,7 @@ function verificar_number(){
 function functionSingle() {
   if ( exigir( "void" ) ) {
     // Aqui va en nombre de la function para hacerla
-    codigo_intermedio[i++] = CUSTOMER;
+    //codigo_intermedio[i++] = CUSTOMER;
     addSymbol(tokens[index].token, i);
 
     index++;                //move current token position
@@ -376,16 +376,19 @@ function while_expression(){
 function iterate_expression(){
   if(exigir("iterate")){
     if(exigir("(")){
+      begin = i;
       codigo_intermedio[i++] = ITERATE;
       number();
+      codigo_intermedio[i++] = JUMP;
+      stack.push(i++);
 
       if(!exigir(")")){
         throw "')'";
       }
       if(exigir("{")){
-        begin = i;
         body();
         codigo_intermedio[i++] = JUMP;
+        codigo_intermedio[stack.pop()]= i+1;
         codigo_intermedio[i++] = begin;
         if(!exigir("}")){
           throw "'}'";

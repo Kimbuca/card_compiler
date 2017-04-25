@@ -63,6 +63,17 @@ function execIntermediateCod(input){
 					break;
 				}
 
+				case Keys.ITERATE: {
+					if(codInt[++i] > 0){
+						codInt[i] = codInt[i] - 1;
+						i = i + 3;
+					}else{
+						i++;
+					}
+					runProgram();
+					break;
+				}
+
 				case Keys.GETCARD:{
 					var deck = codInt[++i];
 					i++;
@@ -111,8 +122,8 @@ function execIntermediateCod(input){
 			}
 			return;
 		}else{
-
-
+			console.log("Finishing");
+			
 			//finish
 			//clearInterval(animationTimer);
 		}
