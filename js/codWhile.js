@@ -26,7 +26,7 @@ function execIntermediateCod(input){
 			//debugger;
 			if(codInt[i] == undefined){
 				i++;
-				runProgram()
+				runProgram();
 			}
 
 			console.log("Running.. ", codInt[i]);
@@ -102,7 +102,7 @@ function execIntermediateCod(input){
 				case Keys.ISBLACK:{
 					console.log("Carta ",i  ,"es negra?");
 					if(runConditional()){
-						i = i+2;
+						i = i+3;
 					}else{
 						i++;
 					}
@@ -112,9 +112,8 @@ function execIntermediateCod(input){
 
 				case Keys.ISRED: {
 					if(runConditional()){
-						i = i+2;
+						i = i+3;
 					}else{
-						current_card =
 						i++;
 					}
 					runProgram();
@@ -150,6 +149,7 @@ function execIntermediateCod(input){
 	}
 
 	function runConditional(){
+		console.log("Llegue a condicional con: " + codInt[i]);
 		switch(codInt[i]){
 			case Keys.ISNOTEMPTY:{
 				var current_deck = codInt[++i];
@@ -206,49 +206,61 @@ function execIntermediateCod(input){
 				return !(current_card.suit == "spades");
 			}
 			default:{
-				composed_condition();
+				return composed_condition();
 			}
 		}
 	}
 
 	function composed_condition(){
-		var num1 = codInt[i];
+		var num1 = current_card.rank;
 		var num2 =0;
-		i++;
+
+		if(current_card.rank == "J"){
+			num1=11;
+		}else if(current_card.rank == "Q"){
+			num1=12;
+		}else if(current_card.rank == "K"){
+			num1=13;
+		}else if(current_card.rank == "A"){
+			num1=1;
+		}
+
+		//console.log("La CARTA ES :" + num1 + "Tu Operador es: " + codInt[i]);
 		switch(codInt[i]){
 			case Keys.LESSTHAN:{
 				i++;
 				num2 = codInt[i];
 				//i++;
-				return num1 < num2;
+				//console.log("Tu boolean sera: " + num1 < num2);
+				return (num1 < num2);
 			}
 			case Keys.GREATERTHAN: {
 				i++;
 				num2= codInt[i];
 				//i++;
-				return num1 > num2;
+				return (num1 > num2);
 			}
 			case Keys.LESSOREQUAL:{
 				i++;
 				num2= codInt[i];
 				//i++;
-				return num1 <= num2;
+				return (num1 <= num2);
 			}
 			case Keys.GREATEROREQUAL:{
 				i++;
 				num2= codInt[i];
-				return num1 >= num2;
+				return (num1 >= num2);
 			}
 			case Keys.ISEQUAL:{
 				i++;
 				num2= codInt[i];
 				//i++;
-				return num1 == num2;
+				return (num1 == num2);
 			}
 			case Keys.ISNOTEQUAL:{
 				i++;
 				num2= codInt[i];
-				return num1 != num2;
+				return (num1 != num2);
 			}
 		}
 	}

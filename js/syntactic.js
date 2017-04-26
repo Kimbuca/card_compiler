@@ -501,9 +501,16 @@ function card_simple_condition(){
   }
 }
 
-function card_composed_condition(){
-  number()
-	operator();
+function card_composed_conditional(){
+  console.log("Llegue a value");
+  if(exigir("VALUE")){
+    operator();
+    number();
+  }else{
+    throw "'VALUE'";
+  }
+  
+	
 }
 
 function number(){
